@@ -199,8 +199,8 @@ export interface MockCourse {
   icon?: any;
   description?: string;
   objectives?: string[];
-  modules: ModuleType[];
-  currentStage: 'content' | 'assessment' | 'report' | 'certificate';
+  modules: (ModuleType | number)[];
+  currentStage: 'content' | 'assessment' | 'report' | 'certificate' | 'preview';
   overallProgress: number;
   rating?: number;
   videoUrl?: string;
@@ -211,6 +211,9 @@ export interface MockCourse {
   status?: 'published' | 'pending_review' | 'archived';
   lessons?: number;
   duration?: string;
+  source?: string;
+  target?: string;
+  image?: string;
 }
 
 export const MOCK_COURSES: MockCourse[] = [
