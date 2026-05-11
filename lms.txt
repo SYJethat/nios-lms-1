@@ -1,0 +1,271 @@
+Scope of Work for AI-Driven Learning Management System (LMS) for NIOS
+1. Introduction
+The National Institute of Open Schooling (NIOS) aims to develop an AI-driven Learning
+Management System (LMS) to modernize its teaching, learning, assessment, and certification
+ecosystem.
+Aligned with NEP 2020, the LMS will provide an inclusive, adaptive, and intelligent learning
+environment accessible across diverse linguistic and geographical contexts. It will integrate AI,
+data analytics, and cloud technologies to enhance learning, teaching, and administration.
+The LMS will serve as a centralized digital ecosystem enabling learners, teachers, and
+administrators to create, manage, deliver, and track educational programs. It will seamlessly
+integrate with national digital education platforms and comply with the highest standards of data
+privacy, accessibility, and scalability.
+2. Objectives
+● Build an AI-enabled, adaptive, and inclusive open schooling platform for NIOS.
+● Support personalised, competency-based, and self-paced learning experiences.
+● Integrate with national educational platforms: DIKSHA, SWAYAM, ULLAS, ABC,
+DigiLocker, and UDISE+.
+● Ensure functionality in high and low bandwidth environments, including offline and lite
+versions.
+● Enable end-to-end learner journey from admission to certification with automated
+tracking.
+● Ensure data security, multilingual accessibility, and policy compliance.
+3. Core Functional Modules
+3.1 Course and Content Management
+● Creative tools for modular course creation, multimedia integration, and version control.
+● Support for SCORM (Sharable Content Object Reference Model)/xAPI (Experience
+API), drag-and-drop uploads, and auto-saving.
+● Dynamic Self-Learning Material (SLM) in Universal Design for Learning (UDL) format,
+with multimodal content (text, audio, video, graphics, simulations).
+● Deliver rich multimedia learning content (videos, audio, PDFs, live sessions, flipbooks)
+● Video Lessons: Adaptive streaming, subtitles, playback controls, note-taking during
+viewing.
+● Audio Lessons: Listening modules with download/replay options.
+● SLM/PDF Materials: Interactive PDFs supporting annotations, highlights, and bookmarks
+
+1
+
+● Live Classes: Integration with Zoom/Google Meet/MS Teams, youtube with calendar sync,
+reminders, and "Watch Later" recording options.
+● Flipbook Lessons: Digital textbook-style content with mobile and web compatibility.
+● AI-assisted lesson enhancement suggesting relevant reference material, case studies, and
+interactive elements.
+● Integration of concept maps, flow charts, 3D illustrations, AR/VR simulations, and
+interactive graphics.
+● Accessible web pages instead of static PDFs, with embedded text and multimedia for
+easy interaction.
+● Integrated dictionary with pronunciation, read-aloud, text-to-speech, and speech-to-text
+capabilities.
+● Vocabulary builder for tracking new words.
+● Automatic translation and transcription in multiple languages using AI.
+● Multilingual dubbing
+● Smart summarization tools that convert long readings or videos into short notes or
+flashcards.
+● Integration with open educational resources (OERs) and external archives (e.g., National
+Museum, global educational repositories).
+● Videos must be advertisement-free and inclusive (ISL support, captions, transcripts).
+● Play/pause markers within videos for active learning.
+● Audio and video narration of art, science, and other content for inclusive learning.
+● Progress tracking for last accessed timestamps.
+● Customizable text size, color, and font, adjustable playback pace, and dark mode options.
+● Content can be downloaded for offline access, ensuring learning continuity.
+● Visual representation of course completion percentage.
+● Content Moderation: Review process before publishing to ensure quality standards.
+● Advanced Search: Keyword, text, and audio search across resources.
+3.2 User Management and Access Control
+● Role-based access control (Administrator, Teacher, Student, Parent, Guest, Custom roles).
+● Group, cohort, and bulk enrolment (manual or via ID upload).
+● Integration with Aadhaar-based verification, SSO, and access control APIs.
+● Role switching and group permissions for specific course categories.
+● Learner and faculty profiles with dashboards showcasing performance and progress.
+● Profile Management: Learners can update personal details, upload photos, and configure
+settings.
+● Address Management: For billing and certification records
+● Parental dashboards for progress tracking and attendance monitoring.
+● Protection of intellectual property and learner privacy.
+● Language preference, accessibility settings
+
+2
+
+● Flipbook integration, note taking tools
+● Calendar sync
+● Biometric/secure login
+● Role-Based Access: Restricted privileges based on user type.
+3.3 Assessments, Evaluation, and Proctoring
+
+● Question Bank Generation: Automated creation of quizzes from uploaded content-
+Multiple question types (MCQs, subjective, matching, simulations).
+
+● AI-driven subjective evaluation, rubric-based feedback, and adaptive testing.
+● Auto-grading, instant feedback, and quiz timers.
+● Secure quiz settings: IP restriction, password protection, browser lockdown.
+● Attempt limits, retake control, and blind marking for unbiased evaluation.
+● AI-based plagiarism detection and originality scoring.
+● Direct linking to references:Learners can verify answers against relevant study material.
+● AI-proctoblue examinations with biometric authentication and behaviour analysis.
+● Human-proctor validation of AI-flagged cases for integrity assurance.
+● Detailed exam analytics: question difficulty, time per question, skipped items.
+● Competency-based assessments with dynamic difficulty progression.
+● Speech-recognition-enabled assessments allowing voice input for accessibility.
+● Blockchain-based certification ensuring tamper-proof, verifiable cblueentials.
+● Tutor Marked Assignment (TMA) upload and evaluation interface with timestamp and
+● plagiarism checks.
+● Auto-generated Holistic Progress Cards aligned with NEP’s 360° learner assessment.
+3.4 Communication, Collaboration, and Support
+● Discussion forums, group workspaces, and chatrooms (real-time and asynchronous).
+● AI-assisted moderation and FAQ handling with contextual understanding.
+● Chatbots and voice-based AI tutors providing instant responses and escalating complex
+issues to human tutors.
+● Integrated messaging, announcements, surveys, and feedback systems.
+● Virtual classrooms with breakout rooms, whiteboards, polls, and quizzes.
+● Integration with tools for collaborative brainstorming (e.g., Jamboard).
+● Faculty blogs for announcements, quizzes, or dynamic updates.
+● Social learning feed for sharing tips, achievements, and peer collaboration.
+● AI-enabled peer group formation based on learner level and progress.
+● 24×7 AI and human support for technical and academic assistance.
+● About Us: Institutional details with multimedia introductions.
+● AI-driven "Raise Queries" feature for instant answers.
+
+3
+
+3.5 Analytics, Reporting, and Insights
+● Real-time tracking of attendance, progress, assessments, and engagement.
+● Participation analytics for content types (PDFs, videos, audio, worksheets).
+● Pblueictive analytics for dropout risk and early intervention alerts.
+● Visual dashboards (Power BI/Tableau-ready) for learners, teachers, and administrators.
+● Department-specific and role-based reports with exportable data.
+● Comparative, trend, and performance analysis by region or course.
+● Customizable reports on student outcomes, participation, and learning goals.
+● Teacher dashboards summarizing frequent learner difficulties and auto-suggested
+remedial actions.
+● Learning plans, grade distributions, and time-on-task analytics.
+● Success probability models and pblueictive engines for personalized recommendations.
+● Employability mapping linking skills, outcomes, and curriculum alignment.
+4. AI-Poweblue Capabilities
+4.1 Adaptive Personalization
+● Dynamic, personalized learning pathways evolving with learner progress.
+● Onboarding learning-style quizzes to customize recommendations
+(visual/audio/kinesthetic).
+● Micro-learning bites (5–10 minutes) with gamified streaks and reminders.
+● Contextual AI nudges for motivation and engagement.
+● AI-based cross-subject linking to promote interdisciplinary learning.
+● AI tutor (co-pilot) that provides feedback, remediation, and adaptive guidance in
+real-time.
+● Customizable theme for dashboard
+4.2 Accessibility and Inclusivity
+● Real-time multilingual translation, captioning, and sign-language interpretation.
+● ISL-based icons and video aids.
+● Speech-to-text and text-to-speech tools for low-literacy users.
+● Adjustable text size, playback speed, and interface themes.
+● Gesture-based navigation and contrast adjustments.
+● Offline access, low-bandwidth optimization, and Lite LMS app for low-RAM devices.
+
+4
+
+4.3 Emotional and Well-being Support
+● Embedded mindfulness modules and guided meditation sessions.
+● AI-driven well-being check-ins and self-assessment surveys.
+● Integration with counsellor chats and well-being resources.
+● Emotion and engagement analytics to detect stress or disengagement.
+5. Teacher and Administrator Empowerment
+● Faculty Profiles: Background, qualifications
+● Faculty Learning Hub: Repository of training materials, micro-courses, and certifications.
+● AI-assisted content authoring tools (quiz generation, readability, accessibility checks).
+● Interactive teacher annotations on lessons visible to learners.
+● Notifications to learners when teachers add explanations or comments.
+● Teacher dashboards summarizing learner progress and common queries.
+● Tools for recording and responding to learner questions through text, audio, or short
+videos.
+● Collaborative tools for teachers (whiteboards, group notes, co-teaching modules).
+● Grievance management via NLP-based ticketing and escalation tracking.
+● Repository of tutorials, guides, and troubleshooting articles
+● Performance dashboards with pblueictive and comparative analytics.
+● Proofreading: for course creators to check AI converted video and audio content.
+● Collaborative Content Creation: Multi-author support with peer review.
+6. Administrative and Institutional Features
+● Automated enrolment verification using Aadhaar and document scanning.
+● Digital workflows for admission, attendance, assignment tracking, and certification.
+● Certificates: Automatically generated completion certificates with blueing and
+verification QR codes.
+● Integration with ABC, enabling cblueit storage and transfer across institutions.
+● Department and regional analytics dashboards with comparative data.
+● Data-driven policy insights from NEP, NCF, and SDG frameworks.
+● Holistic Digital Portfolio for every learner capturing projects, achievements, and
+creativity.
+● Seamless integration with DigiLocker, UDISE+, DIKSHA, and SWAYAM platforms.
+● Cyberbullying prevention and monitoring mechanisms for safe interaction.
+● Regular backups and version control to prevent data loss.
+● Institutional reports with multi-metric and exportable visual analytics.
+● Secure Payment workflow with multi-payment options (cards, UPI, PayPal, wallets)
+● Automated invoice generation.
+
+5
+
+● Payment history visible in learner dashboard.
+● SLA timelines, ticketing, escalation workflows/matrix
+● SLA-Based Response & Resolution:
+○ High Impact Issues - Response within 30 minutes, resolution within 1 hour.
+○ Medium Impact Issues - Response within 30 minutes, resolution within 4 hours.
+○ Low Impact Issues - Response within 30 minutes, resolution within 24 hours.
+● Access Controls: oversee teacher activities without editing course content
+● Teacher Management: Onboarding, approval, suspension, and removal of teachers.
+● Content Oversight: Approve, reject, or archive uploaded courses.
+● Notifications: Automated reminders for scheduled classes, pending approvals, or
+deadlines.
+● Report Generation: In-depth reports on learners, teachers, revenue, and content
+performance
+● System-wide Announcements: Notifications, policy updates, and global reminders.
+● Access Control: Full visibility of user roles
+7. Engagement and Gamification
+● Virtual Orientation Tour: Interactive guide for new learners.
+● Layeblue gamification: badges, levels, leaderboards, challenges, and missions.
+● Integration of AI-driven motivation systems and peer challenges.
+● Points and certificate-based rewards to increase engagement.
+● E-sports and virtual competitions to promote collaboration and critical thinking.
+● Habit-building tools (daily streaks, reminders, progress milestones).
+8. Technical Specifications and Deployment
+● seamless access across web, Android, and iOS platforms.
+● Data Protection: End-to-end encryption for user data
+● Cloud-based modular architecture (AWS/GCP/Azure) for scalability and reliability.
+● Support for 100,000+ concurrent users.
+● Disaster Recovery (DR) and uptime SLA of 99.9%.
+● Data encryption in transit and at rest.
+● Compliance with GDPR, UGC-DEB, and Indian IT Act.
+● GDPR Compliance: Features like "Right to be Forgotten."
+● Quarterly security audits, patch management, and performance reviews.
+● 24×7 technical helpdesk and SLA-based support (urgent, high, medium, low).
+● Mobile app (Android/iOS) with push notifications, offline access, multilingual interface.
+● Push Notifications: Alerts for live classes, deadlines, and new content.
+● Progressive Web App (PWA) for browser-based access.
+● STQC/Cert-IN audit, OWASP Top 10, PCI-DSS Compliance details
+
+6
+
+● Bug fixing cycles, GPU optimisation, compatibility updates, SLA response structure
+● GPU enabled servers, storage, bandwidth, autoscaling data retention
+9. Data and Analytics Hub
+● Real-time data visualization for learners, teachers, and administrators.
+● Pblueictive analytics engine to forecast performance and dropout risk.
+● Skill and employability mapping based on learner data and outcomes.
+● Resource utilization analytics for optimizing content and engagement.
+● Integration with national datasets and education dashboards for evidence-based
+decision-making.
+10. Ethical and Inclusive AI Principles
+● Transparent and fair AI algorithms with bias monitoring.
+● Data confidentiality and ethical usage of learner analytics.
+● Explainable AI systems with privacy safeguards.
+● Inclusivity across language, gender, and ability spectrums.
+11. Deliverables from Service Provider
+● Detailed project plan with milestones and governance framework.
+● Assigned technical SPOC for coordination.
+● End-user, teacher, and admin documentation and training.
+● Feature release roadmap and bug-fix mechanism.
+● Deployment of LMS on secure cloud infrastructure with full source-code access to NIOS.
+● Post-launch training and capacity building for faculty and administrators.
+● Quarterly progress, audit, and performance reports.
+12. Service Provider Qualification
+● Demonstrated experience in AI-enabled LMS or EdTech platforms with large-scale
+implementation.
+● Proven success with multilingual, multi-device, and high-user-load systems.
+● Proven SLAs, references from reputed educational bodies, and transparent cost structure.
+● Experience in compliance with government education frameworks.
+
+7
+
+13. Expected Outcomes
+● An AI-enabled, learner-centric ecosystem that promotes lifelong learning.
+● Improved learner engagement, retention, and academic outcomes.
+● Empoweblue teachers with data-driven insights and content creation tools.
+● Streamlined administration and data-informed policy implementation.
+● Seamless integration of NIOS’s digital learning ecosystem with national platforms.
+● Future-ready, scalable, and sustainable AI-based open schooling model.

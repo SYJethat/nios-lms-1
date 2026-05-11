@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hindi + English Random Reply Chatbot</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .chat-box {
+            width: 700px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #ccc;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 6px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #output {
+            margin-top: 20px;
+            text-align: left;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 220px;
+            white-space: pre-wrap;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-box">
+    <h1>Hindi + English Chatbot</h1>
+
+    <input
+        type="text"
+        id="userInput"
+        placeholder="अपना message लिखें और Enter दबाएँ..."
+    />
+
+    <br>
+
+    <button onclick="sendMessage()">Send</button>
+
+    <div id="output"></div>
+</div>
+
+<script>
+  const randomReplies = [
+  
+  "रे साला",
+  "कुत्ता आदमी",
+
+  "अरे बहनचोद",
+  "भोसड़ीके क्या कर रहा है",
+  "गांडू आदमी",
+  "तेरी तो वाट लगा दूंगा",
+
+
+ 
+ 
+  "बकचोदी मत कर",
+  "औकात में रह",
+  "कमीना इंसान",
+  "बेकार बंदा",
+  "झांटू आदमी",
+  "तू सुधरेगा नहीं"
+];
+
+    function speakText(text) {
+        window.speechSynthesis.cancel();
+
+        const speech = new SpeechSynthesisUtterance(text);
+        speech.lang = "hi-IN"; // Hindi Voice
+        speech.rate = 1;
+        speech.pitch = 1;
+
+        window.speechSynthesis.speak(speech);
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById("userInput");
+        const output = document.getElementById("output");
+        const userInput = input.value.trim();
+
+        if (!userInput) return;
+
+        const firstReply =
+            randomReplies[Math.floor(Math.random() * randomReplies.length)];
+
+        const prompt = `
+पहला जवाब हमेशा इस वाक्य से शुरू होना चाहिए:
+${firstReply}
+
+फिर user के message का जवाब हिंदी में स्वाभाविक तरीके से दो:
+
+User Message:
+${userInput}
+
+पूरा जवाब हिंदी में होना चाहिए।
+        `;
+
+        try {
+            const response = await fetch("http://localhost:11434/api/generate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: "llama3",
+                    prompt: prompt,
+                    stream: false
+                })
+            });
+
+            const data = await response.json();
+            const aiReply = data.response || "कोई जवाब नहीं मिला";
+
+            const finalText = `आप: ${userInput}
+
+AI जवाब: ${aiReply}`;
+
+            output.innerText = finalText;
+
+            // Auto Hindi Voice
+            speakText(aiReply);
+
+            input.value = "";
+            input.focus();
+
+        } catch (error) {
+            output.innerText = "Error: " + error.message;
+        }
+    }
+
+    // ENTER key auto submit
+    document.getElementById("userInput").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
+</script>
+
+</body>
+</html>
