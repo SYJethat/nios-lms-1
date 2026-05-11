@@ -183,7 +183,7 @@ export const MOCK_SYSTEM_ANNOUNCEMENTS: MockAnnouncement[] = [
 // Existing mock data (unchanged)...
 export interface ModuleType {
   id: string;
-  type: 'reading' | 'listening' | 'writing';
+  type: 'reading' | 'listening' | 'writing' | 'speaking';
   title: string;
   completed: boolean;
   progress: number;

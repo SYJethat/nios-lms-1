@@ -16,7 +16,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { MOCK_COURSES } from '@/lib/mock-data';
+import { MOCK_COURSES, MockCourse } from '@/lib/mock-data';
 import { ALL_484_PATHWAYS } from '@/lib/multilingual-data';
 
 export default function CoursesPage() {
@@ -48,13 +48,13 @@ export default function CoursesPage() {
         enrolled: false,
         rating: 4.8 + (Math.random() * 0.2),
         modules: [1, 2, 3, 4, 5, 6, 7, 8],
-        currentStage: 'preview',
+        currentStage: 'preview' as const,
         overallProgress: 0,
         description: `Master the transition from ${p.source} to ${p.target} with our AI-powered curriculum.`,
         image: `https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=60`
     }));
 
-  const allDisplayCourses = [...MOCK_COURSES, ...relevantPathways];
+  const allDisplayCourses: MockCourse[] = [...MOCK_COURSES, ...relevantPathways];
 
   const filteredCourses = allDisplayCourses.filter(course => {
     const searchStr = searchQuery.toLowerCase();

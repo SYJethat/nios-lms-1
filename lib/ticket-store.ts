@@ -102,9 +102,10 @@ export function subscribeTickets(listener: Listener) {
 
 export function useTickets() {
   const snapshot = () => tickets;
+  const getServerSnapshot = () => tickets;
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const state = useSyncExternalStore(subscribeTickets, snapshot);
+  const state = useSyncExternalStore(subscribeTickets, snapshot, getServerSnapshot);
   return state;
 }
 
