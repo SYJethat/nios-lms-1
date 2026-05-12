@@ -367,29 +367,31 @@ export default function Home() {
       {/* <Hero /> */}
       <section className="relative text-white overflow-hidden">
         <video autoPlay muted loop className="absolute inset-0 w-full h-full object-cover z-0">
-                <source src="/hero-1.mp4" type="video/mp4" />
+                <source src="/hero1.mp4" type="video/mp4" />
               </video>
 
 
         {/* <img src="/hero.png" alt="hero image" className="absolute inset-0 w-full h-full object-cover z-0" /> */}
         <div className="absolute inset-0 bg-white/20 z-10"></div> {/* Optional overlay for better text readability */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 z-20">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-52 z-20">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl">
-            <div className="inline-flex  text-sm font-medium items-center gap-2 px-3 py-1.5 text-white rounded-full bg-blue-500/90 border border-blue-500/30 mb-6">
-              <span className="w-4 h-2   rounded-full bg-blue-700  text-white animate-pulse" />
-              Aligned with NEP 2020
+            <div className="inline-flex  text-sm font-medium items-center gap-2 px-3 py-1.5 text-white rounded-full   mb-6">
+              {/* <span className="w-4 h-2   rounded-full bg-blue-700  text-white animate-pulse" /> */}
+              {/* Aligned with NEP 2020 */}
             </div>
             <h1 className="text-5xl drop-shadow-[2px_2px_6px_rgba(0,0,0,0.4)] sm:text-6xl lg:text-7xl font-black leading-tight mb-6 ">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700   to-red-500 drop-shadow-[2px_2px_6px_rgba(0,0,0,0.4)]">
-                NIOS,   AI -LMS
+                {/* NIOS,   AI -LMS */}
               </span>{" "}
               <br />
 
-              <p className="text-5xl font-black text-white  mb-8 max-w-2xl leading-relaxed">Learn One More Language</p>
+              <p className="text-5xl font-black text-white  mb-8 max-w-2xl leading-relaxed">
+                {/* Learn One More Language */}
+                </p>
             </h1>
 
             <p className="text-lg sm:text-xl text-gray-600 font-medium mb-8 max-w-2xl leading-relaxed">
-              Ministry of Education, Government of India
+              {/* Ministry of Education, Government of India */}
             </p>
           </motion.div>
         </div>
