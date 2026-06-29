@@ -171,6 +171,19 @@ function FeedbackBox({ correct, explanation }: { correct: boolean; explanation: 
 
 // ─── Dubbed Videos from public/video/ ────────────────────────────
 const DUBBED_VIDEOS = [
+    {
+      id: 'aggression',
+      title: 'Aggression Study',
+      description: 'Psychology lesson discussing aggression, social learning, and behavioral patterns.',
+      languages: {
+         'English': 'https://v.jethat.in/video/aggression/Eng_aggression.mp4',
+         'Hindi': 'https://v.jethat.in/video/aggression/hindi_aggression.mp4',
+         'Sanskrit': 'https://v.jethat.in/video/aggression/sanskrit_aggression.mp4',
+         'Gujarati': 'https://v.jethat.in/video/aggression/gujarati_aggression.mp4',
+         'Tamil': 'https://v.jethat.in/video/aggression/tamil_aggression.mp4',
+         'Marathi': 'https://v.jethat.in/video/aggression/marathi_aggression.mp4',
+      }
+   },
    {
       id: 'about',
       title: 'About NIOS',

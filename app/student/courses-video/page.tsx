@@ -16,9 +16,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { MOCK_COURSES } from '@/lib/mock-data';
 
 const COURSE_OVERLAY_MAP: Record<string, { title: string; subject: string }> = {
-  '1': { title: 'About NIOS', subject: 'NIOS' },
-  '2': { title: 'Aggression Study', subject: 'Psychology' },
-  '3': { title: 'Laxmi Story', subject: 'Story' }
+  '1': { title: 'Aggression Study', subject: 'NIOS' },
+  '2': { title: 'About of Psychology', subject: 'Psychology' },
+  '3': { title: 'Laxmi Story', subject: 'Story' },
+  '4': { title: 'Aggression Study', subject: 'NIOS' },
+  '5': { title: 'About of Psychology', subject: 'Psychology' },
+  '6': { title: 'Laxmi Story', subject: 'Story' }
 };
 
 export default function CoursesPage() {
@@ -54,12 +57,15 @@ export default function CoursesPage() {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {MOCK_COURSES.filter(course => ['1', '2', '3'].includes(course.id)).map((course) => {
+        {MOCK_COURSES.filter(course => ['1', '2', '3', '4', '5', '6'].includes(course.id)).map((course) => {
           const getCourseImage = (id: string) => {
             if (id === '1') return '/NIOSlogo_with_title.png';
             if (id === '2') return '/book.jpg';
             if (id === '3') return '/image.png';
-            return '/sanskrit_grammar.png';
+            if (id === '4') return '/NIOS.png';
+            if (id === '5') return '/book.jpg';
+            if (id === '6') return '/image.png';
+            return '/NIOS.png';
           };
           const courseInfo = COURSE_OVERLAY_MAP[course.id] || { title: course.title, subject: course.subject };
           return (
