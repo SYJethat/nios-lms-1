@@ -124,7 +124,7 @@
 //   const accountNav: NavItem[] = [
 //     { icon: <User size={18} />, label: 'Profile', href: '/profile' },
 //     { icon: <Settings size={18} />, label: 'Settings', href: '/settings' },
-   
+
 //   ];
 
 //   const sections = [
@@ -282,6 +282,8 @@ export default function Sidebar() {
   const learnerNav: NavItem[] = [
     { icon: <HomeIcon size={18} />, label: 'Dashboard', href: '/dashboard/learner' },
     { icon: <BookOpen size={18} />, label: 'My Courses', href: '/courses' },
+    { icon: <BookOpen size={18} />, label: 'All Videos', href: '/student/courses-video' },
+
     { icon: <Video size={18} />, label: 'Live Classes', href: '/live' },
     { icon: <FileText size={18} />, label: 'Assessments', href: '/assessments', badge: '3' },
     { icon: <FileText size={18} />, label: 'Analytics ', href: '/analytics', badge: '2' },
@@ -295,15 +297,15 @@ export default function Sidebar() {
     { icon: <HomeIcon size={18} />, label: 'Dashboard', href: '/dashboard/teacher' },
     { icon: <Users size={18} />, label: 'My Students', href: '/teacher/students' },
     { icon: <BookOpen size={18} />, label: 'My Classes', href: '/teacher/classes' },
-   
+
     { icon: <ClipboardList size={18} />, label: 'Gradebook', href: '/teacher/grades', badge: '38' },
     { icon: <Shield size={18} />, label: 'Exams', href: '/teacher/exams', badge: '4' },
     { icon: <FileText size={18} />, label: 'Reports', href: '/teacher/reports', badge: '2' },
     { icon: <Cpu size={18} />, label: 'Faculty Hub', href: '/teacher/content' },
     { icon: <Zap size={18} />, label: 'Announcements', href: '/teacher/announcements', badge: 'New' },
     { icon: <Cpu size={18} />, label: 'AI Chatbot', href: '/chatbot' },
-    { icon: <Headphones size={18} />, label: 'AI Support Tickets', href: '/teacher/tickets'  },
-  
+    { icon: <Headphones size={18} />, label: 'AI Support Tickets', href: '/teacher/tickets' },
+
   ];
 
   const adminNav: NavItem[] = [
@@ -358,20 +360,20 @@ export default function Sidebar() {
   const accountNav: NavItem[] = [
     { icon: <User size={18} />, label: 'Profile', href: '/profile' },
     // { icon: <FileText size={18} />, label: 'Invoice', href: '/student/finance' },
-     ...(role === 'learner'
-    ? [{ icon: <FileText size={18} />, label: 'Invoice', href: '/student/finance' }]
-    : []),
+    ...(role === 'learner'
+      ? [{ icon: <FileText size={18} />, label: 'Invoice', href: '/student/finance' }]
+      : []),
     { icon: <Settings size={18} />, label: 'Settings', href: '/settings' },
-   
+
   ];
 
   const sections = [
     { label: 'Main', items: role === 'learner' ? learnerNav : role === 'teacher' ? teacherNav : role === 'admin' ? adminNav : role === 'guest' ? guestNav : parentNav },
     { label: 'Learning Tools', items: role === 'admin' || role === 'teacher' || role === 'parent' || role === 'guest' ? [] : commonNav },
-    ...(role === 'learner' ? [{ label: 'Performance', items: progressNav } ]  : []),
+    ...(role === 'learner' ? [{ label: 'Performance', items: progressNav }] : []),
     // ...(role === 'learner' ? [{ label: 'Learning Tools', items: progressNav } ]  : []),
-    
-    { label: 'Account', items: accountNav  },
+
+    { label: 'Account', items: accountNav },
   ];
 
   const handleLogout = () => {
