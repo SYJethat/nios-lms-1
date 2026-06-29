@@ -15,6 +15,7 @@ import OfficialFooter from "@/components/OfficialFooter";
 import Hero from "@/components/Hero";
 import LMSPopup from "@/components/LMSPopup";
 import Chatbot from "@/components/Chatbot";
+import ChatBotWidget from "@/components/sambhasini";
 
 const stats = [
   { label: "Active Learners", value: "2.4M+" },
@@ -518,7 +519,8 @@ export default function Home() {
       </section>
 
       <OfficialFooter />
-      <Chatbot />
+      {/* <Chatbot /> */}
+      <ChatBotWidget/>
     </div>
   );
 }
