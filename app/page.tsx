@@ -470,7 +470,7 @@ export default function Home() {
       <div className="bg-slate-50">
         <CollaborationSection />
 
-        <AIFactorySection />
+        {/* <AIFactorySection /> */}
       </div>
 
       {/* Integration Strip */}
