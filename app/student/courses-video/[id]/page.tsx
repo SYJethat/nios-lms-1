@@ -514,7 +514,7 @@ export default function CoursePlayerPage() {
                            </div>
                         </div>
                      ) : (() => {
-                        const currentVideoUrl = (selectedDubbedVideo && selectedDubbedVideo.languages[language as keyof typeof selectedDubbedVideo.languages]) || (selectedDubbedVideo && selectedDubbedVideo.languages['English']) || course.videoUrlsByLanguage?.[language] || course.videoUrl || '';
+                        const currentVideoUrl = (selectedDubbedVideo && selectedDubbedVideo.languages[language as keyof typeof selectedDubbedVideo.languages]) || (selectedDubbedVideo && selectedDubbedVideo.languages['English']) || (course as any).videoUrlsByLanguage?.[language] || course.videoUrl || '';
                         if (currentVideoUrl.endsWith('.mp4') || currentVideoUrl.startsWith('/') || currentVideoUrl.includes('video/')) {
                            return (
                               <video
