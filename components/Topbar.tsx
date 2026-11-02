@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Bell,
   Calendar,
@@ -11,10 +11,21 @@ import {
   User,
   Settings,
   LogOut,
-  Award
-} from "lucide-react";
+  Award,
+  Globe,
+  CheckCircle2,
+  BookOpen,
+  Sparkles,
+  ExternalLink,
+  Video,
+  Radio,
+  FileText
+} from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { redirect } from 'next/navigation';
+import { MOCK_USERS } from '@/lib/mock-data';
+import { INDIAN_LANGUAGES_22 } from '@/lib/courses-data';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 interface TopbarProps {
   title: string;
@@ -22,333 +33,369 @@ interface TopbarProps {
 }
 
 export default function Topbar({ title, subtitle }: TopbarProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { user, logout, updateLinguisticProfile } = useAuth();
+  const activeUser = user || MOCK_USERS[0];
+
   const [searchTerm, setSearchTerm] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [showLangDropdown, setShowLangDropdown] = useState(false);
 
-  const { user, logout } = useAuth();   // Make sure logout function exists in your AuthContext
+  const selectedLang = activeUser.motherLang || 'Hindi';
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Role mappings
-  const roleTitles: Record<string, string> = {
-    learner: 'Student',
-    teacher: 'Teacher',
-    admin: 'Admin',
-    parent: 'Parent',
-    guest: 'Guest'
-  };
-
-  const roleGradients: Record<string, string> = {
-    learner: 'from-blue-500 to-indigo-500',
-    teacher: 'from-green-500 to-emerald-500',
-    admin: 'from-purple-500 to-violet-500',
-    parent: 'from-blue-500 to-red-500',
-    guest: 'from-slate-500 to-slate-700'
-  };
-
-  const displayName = user?.name || 'Guest User';
-  const displayRole = user ? (roleTitles[user.role] || 'User') : 'Guest';
-
-  let userSubtitle = '';
-  if (user?.details) {
-    switch (user.role) {
-      case 'learner':
-        userSubtitle = user.details.class || 'Student';
-        break;
-      case 'teacher':
-        userSubtitle = user.details.subjects?.[0] || 'Faculty';
-        break;
-      case 'admin':
-        userSubtitle = user.details.designation || 'Administrator';
-        break;
-      case 'parent':
-        userSubtitle = user.details.studentName || 'Parent';
-        break;
-      default:
-        userSubtitle = 'User';
-    }
-  }
-
-  const avatarInitial = displayName[0]?.toUpperCase() || 'G';
-  const gradientClass = user
-    ? (roleGradients[user.role] || 'from-slate-500 to-slate-700')
-    : 'from-slate-500 to-slate-700';
-
-  const notifications = [
-    { id: 1, message: "New Sanskrit Pronunciation module added", time: "Just now", unread: true },
-    { id: 2, message: "Your quiz score is ready - Vedic Math", time: "1 hour ago", unread: true },
-    { id: 3, message: "Live session: Bhagavad Gita Chapter 2 starts soon", time: "3 hours ago", unread: false },
-  ];
-
-  const clearSearch = () => setSearchTerm('');
-
-  // Close all dropdowns when clicking outside
+  // Close dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowNotifications(false);
         setShowCalendar(false);
         setShowProfileDropdown(false);
+        setShowLangDropdown(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchTerm.trim()) return;
+    router.push(`/student/explore-courses?q=${encodeURIComponent(searchTerm.trim())}`);
+  };
+
+  const handleLanguageSelect = (langName: string) => {
+    if (updateLinguisticProfile) {
+      updateLinguisticProfile(langName);
+    }
+    setShowLangDropdown(false);
+  };
+
   const handleLogout = () => {
-    if (confirm("Are you sure you want to logout?")) {
-      logout?.(); // Call the logout function from context, optionally redirecting to login
-      redirect('/login');
-      // Optional: Show a logout confirmation
-      setShowProfileDropdown(false);
+    if (confirm('Are you sure you want to sign out from NIOS LMS?')) {
+      logout?.();
+      router.push('/login');
     }
   };
 
-  const handleViewProfile = () => {
-    // alert("redirecting to Profile Page..."); // Replace with router.push('/profile')
-    redirect('/profile');
-
-    // setShowProfileDropdown(false);
-  };
-
-  const handleSettings = () => {
-    // alert("Opening Settings..."); // Replace with router.push('/settings')
-    redirect('/settings');
-    setShowProfileDropdown(false);
-  };
+  const notifications = [
+    {
+      id: 1,
+      title: '23 Regional Dubs Synchronized',
+      message: 'Watch "Importance of Animals, Birds & Plants" in Hindi, English, Sindhi & 20 more languages.',
+      time: 'Just now',
+      unread: true,
+      href: '/student/my-courses/course-env-001',
+      icon: Video,
+      color: 'text-blue-600 bg-blue-50'
+    },
+    {
+      id: 2,
+      title: 'Live Virtual Classroom Active',
+      message: 'Dr. Vikram Mehta is broadcasting live in Science Laboratory Studio.',
+      time: '15 mins ago',
+      unread: true,
+      href: '/live',
+      icon: Radio,
+      color: 'text-rose-600 bg-rose-50'
+    },
+    {
+      id: 3,
+      title: 'Evaluation Reminder',
+      message: 'TMA 2026 Environmental Science portfolio submission window is now open.',
+      time: '2 hours ago',
+      unread: false,
+      href: '/assessments',
+      icon: FileText,
+      color: 'text-amber-600 bg-amber-50'
+    }
+  ];
 
   return (
-    <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-sm">
-      <div className="px-8 py-10 flex items-center justify-between">
+    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
+      <div className="px-6 sm:px-8 py-3.5 flex items-center justify-between gap-4">
 
-        {/* Left: Title */}
-        <div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent tracking-tighter">
+        {/* ── Left Side: Page Title & Breadcrumb ── */}
+        <div className="min-w-0">
+          <h1 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-tight truncate">
             {title}
           </h1>
-          {(subtitle || userSubtitle) && (
-            <p className="text-slate-500 text-sm mt-1 font-medium">
-              {subtitle || userSubtitle}
+          {subtitle && (
+            <p className="text-xs text-slate-500 font-medium truncate mt-0.5">
+              {subtitle}
             </p>
           )}
         </div>
 
-        {/* Center: Search */}
-        <div className="flex-1 max-w-xl mx-12">
-          <div className="relative group">
-            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400">
-              <Search size={20} />
-            </div>
+        {/* ── Center: Search Bar ── */}
+        <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 max-w-md mx-4">
+          <div className="relative w-full group">
+            <Search
+              size={16}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-900 transition-colors pointer-events-none"
+            />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search courses, shlokas, materials..."
-              className="w-full bg-white border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 rounded-2xl pl-12 pr-12 py-3.5 text-base transition-all duration-200 shadow-sm placeholder:text-slate-400"
+              placeholder="Search 23-lang lectures, subjects, modules..."
+              className="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200 focus:border-blue-900 focus:ring-3 focus:ring-blue-900/10 rounded-xl pl-9 pr-8 py-2 text-xs font-semibold text-slate-800 placeholder:text-slate-400 transition-all shadow-xs"
             />
             {searchTerm && (
               <button
-                onClick={clearSearch}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                type="button"
+                onClick={() => setSearchTerm('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
               >
-                <X size={20} />
+                <X size={14} />
               </button>
             )}
           </div>
-        </div>
+        </form>
 
-        {/* Right Side */}
-        <div className="flex items-center gap-3" ref={dropdownRef}>
+        {/* ── Right Side Controls & Profile ── */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0" ref={dropdownRef}>
 
-          {/* Calendar */}
+          {/* 23 Languages Quick Switcher Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setShowLangDropdown(!showLangDropdown);
+                setShowNotifications(false);
+                setShowCalendar(false);
+                setShowProfileDropdown(false);
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 hover:border-blue-300 bg-slate-50 hover:bg-white text-xs font-bold text-slate-800 transition-all cursor-pointer shadow-xs"
+              title="Change your preferred primary language"
+            >
+              <Globe size={14} className="text-blue-900 shrink-0" />
+              <span className="hidden sm:inline font-black">{selectedLang}</span>
+              <ChevronDown size={13} className="text-slate-400" />
+            </button>
+
+            {showLangDropdown && (
+              <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="px-3 py-2 border-b border-slate-100 flex items-center justify-between">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                    23 Indian Languages (NEP 2020)
+                  </span>
+                </div>
+                <div className="max-h-60 overflow-y-auto space-y-0.5 p-1 scrollbar-thin">
+                  {INDIAN_LANGUAGES_22.map((l) => (
+                    <button
+                      key={l.code}
+                      onClick={() => handleLanguageSelect(l.name)}
+                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                        selectedLang.toLowerCase() === l.name.toLowerCase()
+                          ? 'bg-blue-50 text-blue-900 font-black'
+                          : 'text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      <span>{l.name}</span>
+                      <span className="text-[10px] text-slate-400 font-normal">{l.native}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Learning Streak Pill */}
+          <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200/80 text-amber-900 text-xs font-bold shadow-xs">
+            <Flame size={15} className="text-amber-500 fill-amber-500" />
+            <span className="font-black">12 Days</span>
+          </div>
+
+          {/* Academic Calendar Dropdown */}
           <div className="relative">
             <button
               onClick={() => {
                 setShowCalendar(!showCalendar);
                 setShowNotifications(false);
                 setShowProfileDropdown(false);
+                setShowLangDropdown(false);
               }}
-              className="flex items-center gap-2 px-5 py-3 rounded-2xl hover:bg-slate-100 transition-all text-slate-700 hover:text-slate-900"
+              className="w-9 h-9 rounded-xl border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 flex items-center justify-center text-slate-700 transition-all cursor-pointer shadow-xs"
+              title="Academic Calendar"
             >
-              <Calendar size={20} />
-              <span className="text-sm font-medium hidden md:block">Calendar</span>
+              <Calendar size={16} />
             </button>
 
             {showCalendar && (
-              <div className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 p-6 z-50">
-                <div className="text-lg font-semibold text-slate-800 mb-4">
-                  {new Date().toLocaleDateString('en-IN', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-200 p-5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <span className="text-xs font-black text-slate-900 uppercase">
+                    Academic Term 2026
+                  </span>
+                  <span className="text-[10px] font-bold text-blue-900 bg-blue-50 px-2 py-0.5 rounded">
+                    Today
+                  </span>
                 </div>
-                <div className="bg-gradient-to-br from-blue-50 to-red-50 rounded-xl p-5 text-center">
-                  <p className="text-blue-600 font-medium">No classes scheduled today</p>
-                  <p className="text-xs text-slate-500 mt-1">Enjoy your learning journey ✨</p>
+                <div className="text-xs text-slate-600 font-medium">
+                  {new Date().toLocaleDateString('en-IN', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
                 </div>
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5 text-xs text-slate-700">
+                  <div className="font-bold text-blue-900">• Tomorrow 10:00 AM: Science MCQ Quiz</div>
+                  <div className="text-[11px] text-slate-500">• 15 May: TMA 2026 Submission Deadline</div>
+                </div>
+                <Link
+                  href="/schedule"
+                  onClick={() => setShowCalendar(false)}
+                  className="block text-center text-xs font-black text-blue-900 hover:underline pt-1"
+                >
+                  View Full Academic Schedule →
+                </Link>
               </div>
             )}
           </div>
 
-          {/* Notifications */}
+          {/* Notifications Dropdown */}
           <div className="relative">
             <button
               onClick={() => {
                 setShowNotifications(!showNotifications);
                 setShowCalendar(false);
                 setShowProfileDropdown(false);
+                setShowLangDropdown(false);
               }}
-              className="relative flex items-center justify-center w-12 h-12 rounded-2xl hover:bg-slate-100 transition-all"
+              className="relative w-9 h-9 rounded-xl border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 flex items-center justify-center text-slate-700 transition-all cursor-pointer shadow-xs"
+              title="Notifications"
             >
-              <Bell size={22} className="text-slate-700" />
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
+              <Bell size={16} />
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-white text-[9px] font-black rounded-full flex items-center justify-center ring-2 ring-white">
                 3
-              </div>
+              </span>
             </button>
 
             {showNotifications && (
-              <div className="absolute -right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50">
-                <div className="px-6 py-5 border-b flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
-                  <div className="font-medium text-lg ">Notifications</div>
-                  <button className="text-blue-600 text-sm font-medium hover:underline">Mark all read</button>
+              <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                  <span className="text-xs font-black text-slate-900 uppercase tracking-wider">
+                    Notifications
+                  </span>
+                  <span className="text-[10px] font-black text-blue-900 hover:underline cursor-pointer">
+                    Mark All Read
+                  </span>
                 </div>
 
-                <div className="max-h-[420px] overflow-auto">
-                  {notifications.map((notif) => (
-                    <div
-                      key={notif.id}
-                      className={`px-6 py-4 hover:bg-slate-50 border-b border-slate-200 last:border-none ${notif.unread ? 'bg-blue-50/70' : ''}`}
+                <div className="divide-y divide-slate-100 max-h-72 overflow-y-auto">
+                  {notifications.map((n) => (
+                    <Link
+                      key={n.id}
+                      href={n.href}
+                      onClick={() => setShowNotifications(false)}
+                      className={`p-3.5 hover:bg-slate-50 flex items-start gap-3 transition-colors block ${
+                        n.unread ? 'bg-blue-50/40' : ''
+                      }`}
                     >
-                      <div className="text-slate-700 text-sm">{notif.message}</div>
-                      <div className="text-[10px] text-slate-500 mt-1">{notif.time}</div>
-                    </div>
+                      <div className={`p-2 rounded-xl shrink-0 ${n.color}`}>
+                        <n.icon size={15} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-xs font-bold text-slate-900 truncate">{n.title}</div>
+                        <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5">{n.message}</p>
+                        <span className="text-[9px] font-bold text-slate-400 mt-1 block">{n.time}</span>
+                      </div>
+                    </Link>
                   ))}
                 </div>
 
-                <div className="p-4 text-center text-blue-600 text-sm font-medium border-t hover:bg-slate-50 cursor-pointer">
-                  View all activity
+                <div className="p-3 text-center border-t border-slate-100 bg-slate-50/50">
+                  <Link
+                    href="/dashboard/learner"
+                    onClick={() => setShowNotifications(false)}
+                    className="text-xs font-black text-blue-900 hover:underline"
+                  >
+                    View All Academic Activity →
+                  </Link>
                 </div>
               </div>
             )}
           </div>
-          <div className={`w-[20vh] h-8 rounded-xl border border-slate-500  flex items-center justify-center text-left   text-sm`}
-          >
-            <select name="Language" id="1" className='text-left text-slate-800'>
 
-              <option value="en">English</option>
-              <option value="hi">Hindi</option>
-              <option value="sa">Sanskrit</option>
-              <option value="bn">Bengali</option>
-              <option value="ta">Tamil</option>
-              <option value="te">Telugu</option>
-              <option value="kn">Kannada</option>
-              <option value="ml">Malayalam</option>
-              <option value="mr">Marathi</option>
-              <option value="gu">Gujarati</option>
-              <option value="pa">Punjabi</option>
-
-
-
-            </select>
-          </div>
-          {/* </div> */}
-          {/* Streak */}
-          <div className="flex items-center gap-1.5 border    border-slate-200 rounded-2xl px-4 py-2 text-sm font-semibold text-blue-700">
-            <Flame className="text-blue-500" size={18} />
-            <span>12 Day Streak</span>
-          </div>
-
-          {/* Profile with Dropdown */}
-          <div className="relative">
+          {/* Profile Dropdown */}
+          <div className="relative pl-1 border-l border-slate-200">
             <button
               onClick={() => {
                 setShowProfileDropdown(!showProfileDropdown);
                 setShowNotifications(false);
                 setShowCalendar(false);
+                setShowLangDropdown(false);
               }}
-              className="flex items-center gap-3 pl-4   rounded-full py-1 pr-2 transition-all"
+              className="flex items-center gap-2 p-1 rounded-xl hover:bg-slate-100 transition-all cursor-pointer"
             >
-              <div
-                className={`w-11 h-11 rounded-full border-2 border-slate-500 animate-pulse bg-gradient-to-br ${gradientClass} flex items-center justify-center text-white font-bold text-xl shadow-md ring-2 ring-white hover:scale-105 transition-transform`}
-              >
-                {avatarInitial}
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-950 via-slate-900 to-indigo-950 text-white flex items-center justify-center font-black text-xs shadow-xs border border-blue-900/30">
+                {activeUser.name.charAt(0)}
               </div>
-              <ChevronDown size={18} className="text-slate-400" />
+              <ChevronDown size={14} className="text-slate-400" />
             </button>
 
-            {/* Profile Dropdown */}
             {showProfileDropdown && (
-              <div className="absolute right-0 mt-3 w-72 bg-white rounded-2xl shadow-2xl border border-slate-100 py-2 z-50 overflow-hidden">
-                {/* User Info */}
-                <div className="px-6 py-5 border-b border-slate-100">
-                  <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${gradientClass} flex items-center justify-center text-white font-bold text-3xl shadow`}>
-                      {avatarInitial}
-                    </div>
-                    <div>
-                      <div className="font-semibold text-md text-slate-900">{displayName}</div>
-                      <div className="text-xs text-slate-500">{displayRole} • {userSubtitle}</div>
-                    </div>
+              <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150 space-y-1">
+                {/* User info header */}
+                <div className="p-3 bg-slate-50 rounded-xl space-y-0.5">
+                  <div className="font-black text-xs text-slate-900 truncate">{activeUser.name}</div>
+                  <div className="text-[10px] text-slate-500 truncate">
+                    {activeUser.details.enrollmentNo || 'ENR-2025-001'} · {activeUser.details.class || 'Class 10'}
                   </div>
+                  <span className="inline-block px-1.5 py-0.2 rounded bg-blue-100 text-blue-900 text-[8px] font-black uppercase">
+                    {activeUser.role}
+                  </span>
                 </div>
 
-                {/* Menu Items */}
-                <div className="py-2">
-                  <button
-                    onClick={handleViewProfile}
-                    className="w-full px-6 py-2 flex items-center gap-2 hover:bg-slate-50 text-left transition-colors"
-                  >
-                    <User size={20} className="text-slate-500" />
-                    <span className="font-medium text-slate-700 text-sm">View Profile</span>
-                  </button>
-
-                  <button
-                    onClick={handleSettings}
-                    className="w-full px-6 py-2 flex items-center gap-2 hover:bg-slate-50 text-left transition-colors"
-                  >
-                    <Settings size={20} className="text-slate-500" />
-                    <span className="font-medium text-slate-700 text-sm">Settings</span>
-                  </button>
-
-                  <button
-                    onClick={handleViewProfile => {
-                      redirect('/achievements');
-                    }}
-                    className="w-full px-6 py-2 flex items-center gap-2 hover:bg-slate-50 text-left transition-colors"
-                  >
-                    <Award size={20} className="text-slate-500" />
-                    <span className="font-medium text-slate-700 text-sm">My Achievements</span>
-                  </button>
-                </div>
-
-                <div className="border-t border-slate-100 my-1"></div>
-
-                {/* Logout */}
-                <button
-                  onClick={handleLogout}
-                  className="w-full px-6 py-2 flex items-center gap-2 hover:bg-blue-50 text-left transition-colors text-blue-600"
+                {/* Dropdown navigation */}
+                <Link
+                  href="/profile"
+                  onClick={() => setShowProfileDropdown(false)}
+                  className="w-full px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 flex items-center gap-2.5 transition-colors block"
                 >
-                  <LogOut size={20} />
-                  <span className="font-medium">Logout</span>
-                </button>
+                  <User size={15} className="text-slate-400" />
+                  <span>My Profile & Bio</span>
+                </Link>
+
+                <Link
+                  href="/student/certificates"
+                  onClick={() => setShowProfileDropdown(false)}
+                  className="w-full px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 flex items-center gap-2.5 transition-colors block"
+                >
+                  <Award size={15} className="text-amber-500" />
+                  <span>Verified Certificates</span>
+                </Link>
+
+                <Link
+                  href="/settings"
+                  onClick={() => setShowProfileDropdown(false)}
+                  className="w-full px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 flex items-center gap-2.5 transition-colors block"
+                >
+                  <Settings size={15} className="text-slate-400" />
+                  <span>Account Settings</span>
+                </Link>
+
+                <div className="border-t border-slate-100 pt-1">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full px-3 py-2 rounded-xl text-xs font-black text-rose-600 hover:bg-rose-50 flex items-center gap-2.5 transition-colors cursor-pointer"
+                  >
+                    <LogOut size={15} />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
 
         </div>
-      </div>
 
-      {/* Overlay */}
-      {(showNotifications || showCalendar || showProfileDropdown) && (
-        <div
-          className="fixed inset-0 z-40 bg-transparent"
-          onClick={() => {
-            setShowNotifications(false);
-            setShowCalendar(false);
-            setShowProfileDropdown(false);
-          }}
-        />
-      )}
-    </div>
+      </div>
+    </header>
   );
 }

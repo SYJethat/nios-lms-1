@@ -66,7 +66,7 @@ export default function DashboardLayout({
     return (
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
-        <div className="flex-1 ml-[280px] min-h-screen flex flex-col items-center justify-center">
+        <div className="flex-1 ml-0 md:ml-[280px] min-h-screen flex flex-col items-center justify-center">
           <div className="text-center space-y-4 p-8">
             <div className="w-20 h-20 rounded-xl bg-blue-50 flex items-center justify-center mx-auto">
               <ShieldX size={36} className="text-blue-400" />
@@ -100,7 +100,7 @@ export default function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
-      <div className="flex-1 ml-[280px] min-h-screen flex flex-col">
+      <div className="flex-1 ml-0 md:ml-[280px] min-h-screen flex flex-col">
         <Topbar title={title} subtitle={`${user?.name || ''} · ${subtitle || ''}`} />
         <main id="main" tabIndex={-1} aria-label="Main dashboard content">
           <div className="p-8 flex-1">

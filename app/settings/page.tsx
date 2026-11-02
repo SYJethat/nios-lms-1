@@ -26,47 +26,48 @@ import {
    Users
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { div } from 'framer-motion/client';
+import { MOCK_USERS } from '@/lib/mock-data';
 
 export default function SettingsPage() {
    const { user } = useAuth();
+   const activeUser = user || MOCK_USERS[0];
    const [activeTab, setActiveTab] = useState('General');
-
-   if (!user) return null;
 
    return (
       <DashboardLayout
-         title="Advanced Platform Configuration"
-         subtitle="Customize your regional, security, and accessibility preferences for a personalized NIOS experience"
+         title="Platform Configuration & Regional Settings"
+         subtitle={`${activeUser.name} · Customize regional bhasha, security, and accessibility preferences`}
       >
-         <div className="grid lg:grid-cols-[280px_1fr] gap-10 items-start animate-fade-in pb-20 max-w-8xl mx-auto">
+         <div className="grid lg:grid-cols-[280px_1fr] gap-8 items-start animate-fade-in pb-20 max-w-8xl mx-auto">
 
-            {/* Sidebar Tabs */}
-            <div className="space-y-4">
+            {/* Sidebar Tabs (Light Theme) */}
+            <div className="space-y-3">
                {['General', 'Security', 'Accessibility', 'Privacy', 'Support'].map((tab) => (
                   <button
                      key={tab}
                      onClick={() => setActiveTab(tab)}
-                     className={`w-full p-4 rounded-xl flex items-center justify-between transition-all group ${activeTab === tab ? 'bg-slate-900 text-white shadow-xl translate-x-2' : 'bg-white border border-slate-100 text-slate-400 hover:border-blue-900/20 hover:text-slate-900'
+                     className={`w-full p-4 rounded-xl flex items-center justify-between transition-all cursor-pointer ${activeTab === tab
+                           ? 'bg-blue-900 text-white shadow-xs font-bold'
+                           : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
                         }`}
                   >
                      <div className="flex items-center gap-3">
-                        {tab === 'General' && <Paintbrush size={18} />}
-                        {tab === 'Security' && <ShieldCheck size={18} />}
-                        {tab === 'Accessibility' && <Accessibility size={18} />}
-                        {tab === 'Privacy' && <Eye size={18} />}
-                        {tab === 'Support' && <LifeBuoy size={18} />}
-                        <span className="text-[10px] font-black uppercase tracking-widest">{tab}</span>
+                        {tab === 'General' && <Paintbrush size={16} />}
+                        {tab === 'Security' && <ShieldCheck size={16} />}
+                        {tab === 'Accessibility' && <Accessibility size={16} />}
+                        {tab === 'Privacy' && <Eye size={16} />}
+                        {tab === 'Support' && <LifeBuoy size={16} />}
+                        <span className="text-xs uppercase tracking-wider font-bold">{tab}</span>
                      </div>
-                     <ChevronRight size={14} className={activeTab === tab ? 'text-blue-900' : 'opacity-0'} />
+                     <ChevronRight size={14} className={activeTab === tab ? 'text-white' : 'opacity-0'} />
                   </button>
                ))}
 
-               <div className="p-8 rounded-xl bg-blue-50 border border-blue-100 mt-10">
-                  <Sparkles className="text-blue-900 mb-4" size={24} />
-                  <h4 className="text-[10px] font-black text-blue-900 uppercase tracking-widest mb-2">Alpha Participation</h4>
-                  <p className="text-[8px] font-medium text-slate-500 uppercase tracking-widest leading-relaxed">
-                     You are currently enrolled in our early-access learning node. Features may update frequently.
+               <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 text-slate-800 space-y-2 mt-6 shadow-2xs">
+                  <Sparkles className="text-amber-600" size={20} />
+                  <h4 className="text-xs font-black uppercase text-blue-950">NEP 2020 Compliance</h4>
+                  <p className="text-[11px] leading-relaxed text-slate-600 font-medium">
+                     Your profile is configured for multilingual open learning with Digilocker synchronization.
                   </p>
                </div>
             </div>
@@ -76,22 +77,22 @@ export default function SettingsPage() {
 
                {/* Section 1: Appearance */}
                {activeTab === 'General' && (
-                  <div className="space-y-8 animate-fade-in">
-                     <div className="p-10 rounded-xl bg-white border border-slate-100 shadow-sm">
-                        <div className="flex items-center gap-3 mb-10">
-                           <Palette className="text-blue-900" size={24} />
-                           <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Theme & Visuals</h3>
+                  <div className="space-y-6 animate-fade-in">
+                     <div className="p-8 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-6">
+                        <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                           <Palette className="text-blue-900" size={22} />
+                           <h3 className="text-base font-black text-slate-900 uppercase tracking-tight">Theme &amp; Visual Mode</h3>
                         </div>
-                        <div className="grid md:grid-cols-3 gap-6">
+                        <div className="grid md:grid-cols-3 gap-4">
                            {[
-                              { name: 'NIOS Dark', desc: 'High end contrast (Default)', active: true },
-                              { name: 'National Blue', desc: 'Standard clarity', active: false },
-                              { name: 'Monochrome', desc: 'Classic accessibility', active: false },
+                              { name: 'NIOS Light', desc: 'Clean high-contrast clarity (Default)', active: true },
+                              { name: 'National Blue', desc: 'Soft saffron & oceanic tones', active: false },
+                              { name: 'Paper White', desc: 'Eye-friendly reading mode', active: false },
                            ].map((t) => (
-                              <div key={t.name} className={`p-6 rounded-xl border transition-all cursor-pointer ${t.active ? 'bg-slate-900 text-white border-slate-900 shadow-xl' : 'bg-slate-50 border-slate-100 text-slate-400 hover:border-blue-900/20'
+                              <div key={t.name} className={`p-5 rounded-xl border transition-all cursor-pointer ${t.active ? 'bg-blue-50 border-blue-400 text-blue-950 shadow-xs' : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-slate-300'
                                  }`}>
-                                 <div className="text-[10px] font-black uppercase tracking-widest mb-1">{t.name}</div>
-                                 <p className="text-[8px] font-black uppercase tracking-widest opacity-50">{t.desc}</p>
+                                 <div className="text-xs font-black uppercase tracking-wider mb-1">{t.name}</div>
+                                 <p className="text-[10px] font-semibold text-slate-500">{t.desc}</p>
                               </div>
                            ))}
                         </div>

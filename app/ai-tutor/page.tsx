@@ -28,16 +28,15 @@ import {
 
 import type { ChatMessage } from '@/lib/mock-chat-data';
 import { mockChatHistory, quickSuggestions } from '@/lib/mock-chat-data';
-import { MOCK_COURSES, MOCK_ASSESSMENTS } from '@/lib/mock-data';
+import { MOCK_COURSES, MOCK_ASSESSMENTS, MOCK_USERS } from '@/lib/mock-data';
 
 export default function AITutorPage() {
   const { user } = useAuth();
-  const [input, setInput] = useState(''); // Note: was already here, keeping for context
+  const activeUser = user || MOCK_USERS[0];
+  const [input, setInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>(mockChatHistory);
   const [isLoading, setIsLoading] = useState(false);
   const [isCalling, setIsCalling] = useState(false);
-
-  if (!user) return null;
 
   const suggestions = quickSuggestions.map((title, i) => ({
     title,
@@ -103,7 +102,7 @@ export default function AITutorPage() {
               <div>
                 <div className="text-sm font-black text-slate-900 uppercase tracking-tight">NIOS Intelligent Assistant</div>
                 <div className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Optimizing for Class {user.details.class || 'Secondary'}
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Optimizing for Class {activeUser.details?.class || 'Secondary'}
                 </div>
               </div>
             </div>
@@ -312,7 +311,7 @@ export default function AITutorPage() {
       <AnimatePresence>
         {isCalling && (
           <AICallInterface
-            userName={user.name}
+            userName={activeUser.name}
             onEndCall={() => setIsCalling(false)}
           />
         )}

@@ -23,7 +23,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(JSON.parse(stoblueUser));
       } catch (e) {
         localStorage.removeItem('user');
+        setUser(MOCK_USERS[0]);
       }
+    } else {
+      setUser(MOCK_USERS[0]);
     }
   }, []);
 

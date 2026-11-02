@@ -1,7 +1,7 @@
 'use client';
 
 import DashboardLayout from '@/components/DashboardLayout';
-import { Award, Star, Crown, Zap, TrendingUp, CheckCircle } from 'lucide-react';
+import { Award, Star, Crown, Zap, TrendingUp, CheckCircle, Gamepad2 } from 'lucide-react';
 import { MOCK_BADGES, MOCK_ACHIEVEMENTS, MOCK_STREAKS, MOCK_CHALLENGES } from '@/lib/mock-data';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
@@ -40,6 +40,22 @@ export default function AchievementsPage() {
             <div className="text-4xl font-black text-yellow-500 mb-3">21 days</div>
             <div className="text-[11px] font-black text-slate-600 uppercase tracking-widest">Longest Streak</div>
           </div>
+        </div>
+
+        {/* Gamification Arena Link Banner */}
+        <div className="p-6 rounded-2xl bg-gradient-to-r from-[#0B3D91] to-[#051C45] text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-[#FF9933] text-[#051C45] font-black flex items-center justify-center shrink-0">
+              <Gamepad2 size={24} />
+            </div>
+            <div>
+              <h3 className="text-lg font-black text-white">Earn More Badges & XP in Gamified Arena!</h3>
+              <p className="text-xs text-blue-200">Play speed word sprints, SOV sentence puzzles, and acoustic phonetic drills.</p>
+            </div>
+          </div>
+          <Link href="/gamification" className="px-6 py-3 bg-[#FF9933] text-[#051C45] rounded-xl font-black text-xs uppercase tracking-wider hover:bg-amber-400 transition-all shadow-md shrink-0">
+            Launch Gamification Arena →
+          </Link>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
