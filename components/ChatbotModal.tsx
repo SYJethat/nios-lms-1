@@ -19,6 +19,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { mockChatHistory, quickSuggestions, ChatMessage } from '@/lib/mock-chat-data';
 import Image from 'next/image';
+import { generateNIOSAssistantResponse } from '@/lib/nios-ai-engine';
 
 interface ChatbotModalProps {
   onClose: () => void;
@@ -54,18 +55,25 @@ export default function ChatbotModal({ onClose }: ChatbotModalProps) {
     setInput('');
     setIsTyping(true);
 
-    // Mock AI Response
+    // Accurate NIOS AI Response
     setTimeout(() => {
+      const aiResult = generateNIOSAssistantResponse(
+        input,
+        undefined,
+        [...messages, userMsg].map(m => ({ role: m.role, content: m.content }))
+      );
+
       const aiMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'ai',
-        content: `I've analyzed your request about "${input}". Here are some recommended resources and a quick study plan to help you progress efficiently. Would you like me to generate a practice quiz for this topic?`,
+        content: aiResult.text,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        avatar: '/ai-avatar.png'
+        avatar: '/ai-avatar.png',
+        suggestedActions: aiResult.suggestedActions
       };
       setIsTyping(false);
       setMessages(prev => [...prev, aiMsg]);
-    }, 1500);
+    }, 800);
   };
 
   return (

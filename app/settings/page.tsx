@@ -41,14 +41,14 @@ export default function SettingsPage() {
          <div className="grid lg:grid-cols-[280px_1fr] gap-8 items-start animate-fade-in pb-20 max-w-8xl mx-auto">
 
             {/* Sidebar Tabs (Light Theme) */}
-            <div className="space-y-3">
+            <div className=" sticky top-20 space-y-3">
                {['General', 'Security', 'Accessibility', 'Privacy', 'Support'].map((tab) => (
                   <button
                      key={tab}
                      onClick={() => setActiveTab(tab)}
                      className={`w-full p-4 rounded-xl flex items-center justify-between transition-all cursor-pointer ${activeTab === tab
-                           ? 'bg-blue-900 text-white shadow-xs font-bold'
-                           : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                        ? 'bg-blue-900 text-white shadow-xs font-bold'
+                        : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
                         }`}
                   >
                      <div className="flex items-center gap-3">

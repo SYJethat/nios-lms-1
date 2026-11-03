@@ -20,13 +20,16 @@ export default function DashboardLayout({
   subtitle,
   allowedRoles,
 }: DashboardLayoutProps) {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
+    // Wait until auth state is restored from localStorage before checking routes
+    if (isLoading) return;
+
     if (!isAuthenticated) {
-      router.push('/login');
+      router.push('/portal');
       return;
     }
 
@@ -51,9 +54,9 @@ export default function DashboardLayout({
     if (pathname.startsWith('/admin/') && user?.role !== 'admin') {
       router.replace(`/dashboard/${user?.role}`);
     }
-  }, [isAuthenticated, user, router, pathname]);
+  }, [isLoading, isAuthenticated, user, router, pathname]);
 
-  if (!isAuthenticated) {
+  if (isLoading || !isAuthenticated) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-slate-50">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />

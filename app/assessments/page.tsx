@@ -353,6 +353,91 @@ export default function AssessmentsPage() {
       <AnimatePresence mode="wait">
 
         {/* ── VIEW 1: ASSESSMENT CATALOG & DASHBOARD ── */}
+
+
+
+        {/* Featured Urgent Assessment Spotlight */}
+        <div className="relative mb-6 rounded-[32px] bg-gradient-to-br from-[#071A3D]/10 via-[#0B2D63]/10 to-[#123F7A]/10 p-6 sm:p-10 text-white overflow-hidden shadow-2xl border border-blue-100/20">
+
+          {/* Background Glow Effects */}
+          <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-blue-500/20 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[350px] h-[350px] bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none" />
+
+          {/* Main Content */}
+          <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+
+            {/* Left Content */}
+            <div className="max-w-2xl space-y-4">
+
+              {/* Urgent Badge */}
+              {/* <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-500/15 text-rose-300 text-[11px] font-black uppercase tracking-widest border border-rose-400/30">
+                <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                ACTION REQUIRED · DUE TOMORROW
+              </div> */}
+
+              {/* Heading */}
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight text-blue-900">
+                Importance of Animals, Birds & Plants in Human Life (पर्यावरण अध्ययन)
+              </h2>
+
+              {/* Description */}
+              <p className="text-blue-900/80 text-xs sm:text-sm font-medium leading-relaxed">
+                Interactive 5-question multi-choice evaluation aligned with NIOS Secondary Curriculum & NEP 2020. Features bilingual Hindi/English switchable prompts, read-aloud TTS, and digital verification.
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3.5 pt-2">
+
+                <button
+                  onClick={() => handleStartExam(NIOS_ASSESSMENTS[0])}
+                  className="px-6 py-3.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-white font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-xl shadow-blue-500/30 active:scale-95 transition-all cursor-pointer"
+                >
+                  <Zap size={16} />
+                  <span>Start Evaluation (30 Mins)</span>
+                </button>
+
+                <Link href="/student/my-courses/course-env-001">
+                  <button className="px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-black font-bold text-xs uppercase tracking-wider border border-white/20 backdrop-blur-md transition-all flex items-center gap-2 cursor-pointer">
+                    <BookOpen size={16} />
+                    <span>Review 23-Lang Lecture</span>
+                  </button>
+                </Link>
+
+              </div>
+            </div>
+
+            {/* Right Information Card */}
+            <div className="w-full lg:w-72 p-5 bg-white/[0.08] backdrop-blur-xl rounded-2xl border border-white/15 space-y-3 shrink-0 shadow-xl">
+
+              <div className="flex items-center justify-between text-xs font-bold text-blue-900">
+                <span>TMA Weightage</span>
+                <span className="text-black font-black">
+                  20% of Final Board Grade
+                </span>
+              </div>
+
+              <div className="h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
+                <div className="h-full w-1/5 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300" />
+              </div>
+
+              <div className="text-[11px] text-blue-900 font-medium leading-relaxed">
+                Continuous evaluation scores are indexed directly to your NIOS Hall Ticket and Secondary Marksheet.
+              </div>
+
+              <div className="pt-2 flex items-center gap-1.5 text-[10px] text-emerald-400 font-bold uppercase tracking-wider">
+                <CheckCircle2 size={13} />
+                <span>AI Safe Proctoring Ready</span>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Decorative Bottom Border */}
+          <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-400/60 to-transparent" />
+
+        </div>
+
         {activeTab === 'list' && (
           <motion.div
             key="list"
@@ -387,57 +472,7 @@ export default function AssessmentsPage() {
               ))}
             </div>
 
-            {/* Featured Urgent Assessment Spotlight */}
-            <div className="relative rounded-[32px] bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 p-6 sm:p-10 text-white overflow-hidden shadow-2xl border border-blue-900/40">
-              <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-blue-600/15 rounded-full blur-[100px] pointer-events-none" />
 
-              <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-                <div className="max-w-2xl space-y-4">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-500/20 text-rose-300 text-[11px] font-black uppercase tracking-widest border border-rose-400/30">
-                    <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-                    ACTION REQUIRED · DUE TOMORROW
-                  </div>
-
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight">
-                    Importance of Animals, Birds & Plants in Human Life (पर्यावरण अध्ययन)
-                  </h2>
-
-                  <p className="text-slate-300 text-xs sm:text-sm font-medium leading-relaxed">
-                    Interactive 5-question multi-choice evaluation aligned with NIOS Secondary Curriculum & NEP 2020. Features bilingual Hindi/English switchable prompts, read-aloud TTS, and digital verification.
-                  </p>
-
-                  <div className="flex flex-wrap items-center gap-3.5 pt-2">
-                    <button
-                      onClick={() => handleStartExam(NIOS_ASSESSMENTS[0])}
-                      className="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-xl shadow-blue-600/30 active:scale-95 transition-all cursor-pointer"
-                    >
-                      <Zap size={16} />
-                      <span>Start Evaluation (30 Mins)</span>
-                    </button>
-                    <Link href="/student/my-courses/course-env-001">
-                      <button className="px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider border border-white/15 transition-all flex items-center gap-2 cursor-pointer">
-                        <BookOpen size={16} />
-                        <span>Review 23-Lang Lecture</span>
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="w-full lg:w-72 p-5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 space-y-3 shrink-0">
-                  <div className="flex items-center justify-between text-xs font-bold text-slate-300">
-                    <span>TMA Weightage</span>
-                    <span className="text-amber-400 font-black">20% of Final Board Grade</span>
-                  </div>
-                  <div className="text-[11px] text-slate-300 font-medium">
-                    Continuous evaluation scores are indexed directly to your NIOS Hall Ticket and Secondary Marksheet.
-                  </div>
-                  <div className="pt-2 flex items-center gap-1.5 text-[10px] text-emerald-400 font-bold uppercase tracking-wider">
-                    <CheckCircle2 size={13} />
-                    <span>AI Safe Proctoring Ready</span>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             {/* Filter and Search Bar */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-sm">
@@ -446,11 +481,10 @@ export default function AssessmentsPage() {
                   <button
                     key={f}
                     onClick={() => setFilter(f)}
-                    className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
-                      filter === f
-                        ? 'bg-blue-900 text-white shadow-md'
-                        : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
-                    }`}
+                    className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${filter === f
+                      ? 'bg-blue-900 text-white shadow-md'
+                      : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
+                      }`}
                   >
                     {f}
                   </button>
@@ -477,17 +511,16 @@ export default function AssessmentsPage() {
                   className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-100 hover:border-blue-200 hover:shadow-lg transition-all flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 group"
                 >
                   <div className="flex items-start sm:items-center gap-4 min-w-0 flex-1">
-                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${
-                      a.status === 'Completed'
-                        ? 'bg-emerald-50 text-emerald-700'
-                        : a.type === 'TMA'
+                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${a.status === 'Completed'
+                      ? 'bg-emerald-50 text-emerald-700'
+                      : a.type === 'TMA'
                         ? 'bg-purple-50 text-purple-700'
                         : 'bg-blue-50 text-blue-900'
-                    }`}>
+                      }`}>
                       {a.type === 'Quiz' ? <Zap size={24} /> :
-                       a.type === 'Speaking' ? <Mic size={24} /> :
-                       a.type === 'Practical' ? <BookOpenCheck size={24} /> :
-                       a.type === 'Exam' ? <Award size={24} /> : <FileText size={24} />}
+                        a.type === 'Speaking' ? <Mic size={24} /> :
+                          a.type === 'Practical' ? <BookOpenCheck size={24} /> :
+                            a.type === 'Exam' ? <Award size={24} /> : <FileText size={24} />}
                     </div>
 
                     <div className="space-y-1 min-w-0">
@@ -592,11 +625,10 @@ export default function AssessmentsPage() {
                 </button>
 
                 {/* Countdown Timer */}
-                <div className={`px-5 py-2 rounded-xl flex items-center gap-2.5 font-mono font-black text-lg transition-all border ${
-                  timeLeft < 300
-                    ? 'bg-rose-500/20 text-rose-400 border-rose-500 animate-pulse'
-                    : 'bg-white/10 text-white border-white/15'
-                }`}>
+                <div className={`px-5 py-2 rounded-xl flex items-center gap-2.5 font-mono font-black text-lg transition-all border ${timeLeft < 300
+                  ? 'bg-rose-500/20 text-rose-400 border-rose-500 animate-pulse'
+                  : 'bg-white/10 text-white border-white/15'
+                  }`}>
                   <Timer size={18} className={timeLeft < 300 ? 'text-rose-400' : 'text-blue-400'} />
                   <span>
                     {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}
@@ -646,11 +678,10 @@ export default function AssessmentsPage() {
                     {/* Bookmark Question */}
                     <button
                       onClick={() => toggleBookmark(selectedExam.questions[currentQIndex]?.id)}
-                      className={`p-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold ${
-                        bookmarked[selectedExam.questions[currentQIndex]?.id]
-                          ? 'bg-amber-100 text-amber-900'
-                          : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
-                      }`}
+                      className={`p-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold ${bookmarked[selectedExam.questions[currentQIndex]?.id]
+                        ? 'bg-amber-100 text-amber-900'
+                        : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
+                        }`}
                       title="Bookmark to review later"
                     >
                       <Bookmark size={16} />
@@ -684,17 +715,15 @@ export default function AssessmentsPage() {
                         <button
                           key={idx}
                           onClick={() => handleSelectOption(qId, idx)}
-                          className={`w-full p-4 sm:p-5 rounded-2xl border text-left flex items-center gap-4 transition-all cursor-pointer ${
-                            isSelected
-                              ? 'border-blue-900 bg-blue-50/70 shadow-sm'
-                              : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50 bg-white'
-                          }`}
+                          className={`w-full p-4 sm:p-5 rounded-2xl border text-left flex items-center gap-4 transition-all cursor-pointer ${isSelected
+                            ? 'border-blue-900 bg-blue-50/70 shadow-sm'
+                            : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50 bg-white'
+                            }`}
                         >
-                          <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black shrink-0 transition-colors ${
-                            isSelected
-                              ? 'bg-blue-900 text-white'
-                              : 'bg-slate-100 text-slate-600'
-                          }`}>
+                          <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black shrink-0 transition-colors ${isSelected
+                            ? 'bg-blue-900 text-white'
+                            : 'bg-slate-100 text-slate-600'
+                            }`}>
                             {String.fromCharCode(65 + idx)}
                           </div>
 
@@ -702,11 +731,10 @@ export default function AssessmentsPage() {
                             {isExamLanguageHindi ? opt.hi : opt.en}
                           </div>
 
-                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${
-                            isSelected
-                              ? 'border-blue-900 bg-blue-900 text-white'
-                              : 'border-slate-300'
-                          }`}>
+                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${isSelected
+                            ? 'border-blue-900 bg-blue-900 text-white'
+                            : 'border-slate-300'
+                            }`}>
                             {isSelected && <Check size={12} />}
                           </div>
                         </button>
@@ -720,11 +748,10 @@ export default function AssessmentsPage() {
                   <div className="p-8 rounded-3xl bg-slate-50 border-2 border-dashed border-slate-200 flex flex-col items-center text-center space-y-4">
                     <button
                       onClick={() => setIsSpeakingActive(!isSpeakingActive)}
-                      className={`w-20 h-20 rounded-full flex items-center justify-center shadow-xl transition-all cursor-pointer ${
-                        isSpeakingActive
-                          ? 'bg-rose-600 text-white animate-pulse'
-                          : 'bg-blue-900 text-white hover:bg-blue-800'
-                      }`}
+                      className={`w-20 h-20 rounded-full flex items-center justify-center shadow-xl transition-all cursor-pointer ${isSpeakingActive
+                        ? 'bg-rose-600 text-white animate-pulse'
+                        : 'bg-blue-900 text-white hover:bg-blue-800'
+                        }`}
                     >
                       <Mic size={32} />
                     </button>
@@ -797,15 +824,14 @@ export default function AssessmentsPage() {
                         <button
                           key={idx}
                           onClick={() => setCurrentQIndex(idx)}
-                          className={`aspect-square rounded-xl text-xs font-black transition-all flex flex-col items-center justify-center relative cursor-pointer ${
-                            isCurrent
-                              ? 'ring-2 ring-blue-900 ring-offset-2 bg-blue-900 text-white shadow-md'
-                              : isAnswered
+                          className={`aspect-square rounded-xl text-xs font-black transition-all flex flex-col items-center justify-center relative cursor-pointer ${isCurrent
+                            ? 'ring-2 ring-blue-900 ring-offset-2 bg-blue-900 text-white shadow-md'
+                            : isAnswered
                               ? 'bg-emerald-50 text-emerald-800 border border-emerald-300'
                               : isMarked
-                              ? 'bg-amber-50 text-amber-900 border border-amber-300'
-                              : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
-                          }`}
+                                ? 'bg-amber-50 text-amber-900 border border-amber-300'
+                                : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
+                            }`}
                         >
                           <span>{idx + 1}</span>
                           {isMarked && (

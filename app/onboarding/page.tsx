@@ -13,7 +13,7 @@ const slides = [
     description: 'Adaptive learning powered by AI. Track progress, earn badges, compete on leaderboards.',
     image: '/hero.mp4',
     cta: 'Begin Journey',
-    href: '/login'
+    href: '/portal'
   },
   {
     title: 'Interactive Courses',
@@ -37,7 +37,7 @@ const slides = [
     description: 'Join live sessions with expert faculty. Direct Q&A and doubt clearing.',
     image: '/qrcode.png',
     cta: 'Join as Learner',
-    href: '/login?role=learner'
+    href: '/portal'
   }
 ];
 

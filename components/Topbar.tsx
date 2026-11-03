@@ -78,7 +78,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
   const handleLogout = () => {
     if (confirm('Are you sure you want to sign out from NIOS LMS?')) {
       logout?.();
-      router.push('/login');
+      router.push('/portal');
     }
   };
 

@@ -18,9 +18,12 @@ import {
   X,
   Bookmark,
   Layers,
-  Globe
+  Globe,
+  Maximize2
 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
+import FlipBook from '@/components/FlipBook';
 
 export default function DigitalLibraryPage() {
   const { user } = useAuth();
@@ -88,11 +91,10 @@ export default function DigitalLibraryPage() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  selectedCategory === cat
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${selectedCategory === cat
                     ? 'bg-white text-blue-900 font-black shadow-xs border border-slate-200'
                     : 'text-slate-600 hover:text-slate-900'
-                }`}
+                  }`}
               >
                 {cat}
               </button>
@@ -119,13 +121,22 @@ export default function DigitalLibraryPage() {
               className="bg-white rounded-2xl border border-slate-200 hover:border-blue-300 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group"
             >
               {/* Top Visual Cover (Light Theme) */}
-              <div className="relative h-56 bg-gradient-to-br from-slate-100 to-blue-50/50 flex items-center justify-center p-6 border-b border-slate-100 overflow-hidden">
+              <div
+                onClick={() => setActiveReadingBook(book)}
+                className="relative h-56 bg-gradient-to-br from-slate-100 to-blue-50/50 flex items-center justify-center p-6 border-b border-slate-100 overflow-hidden cursor-pointer group/cover"
+              >
                 <div className="relative w-36 h-44 transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-1 shadow-md rounded-r-xl overflow-hidden border-l-4 border-blue-900 border-y border-r border-slate-200 bg-white">
-                  <Image src={book.cover} alt={book.title} fill className="object-cover" />
+                  <img src={book.cover} alt={book.title} fill className="object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   <div className="absolute bottom-2 left-2 right-2 text-[9px] font-black uppercase text-white tracking-wider">
                     NIOS OFFICIAL
                   </div>
+                </div>
+
+                <div className="absolute inset-0 bg-blue-950/0 group-hover/cover:bg-blue-950/20 transition-colors flex items-center justify-center">
+                  <span className="opacity-0 group-hover/cover:opacity-100 transition-opacity px-3.5 py-1.5 rounded-xl bg-white/90 text-blue-950 text-xs font-black shadow-lg flex items-center gap-1.5">
+                    <BookOpen size={13} /> Open 3D FlipBook
+                  </span>
                 </div>
 
                 <div className="absolute top-3 right-3 px-2.5 py-0.5 bg-white text-blue-900 border border-blue-200 rounded-full text-[9px] font-black uppercase tracking-wider shadow-2xs">
@@ -135,7 +146,10 @@ export default function DigitalLibraryPage() {
 
               {/* Book Info */}
               <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                <div className="space-y-1.5">
+                <div
+                  className="space-y-1.5 cursor-pointer"
+                  onClick={() => setActiveReadingBook(book)}
+                >
                   <h3 className="text-base font-black text-slate-900 group-hover:text-blue-900 transition-colors line-clamp-2">
                     {book.title}
                   </h3>
@@ -177,62 +191,38 @@ export default function DigitalLibraryPage() {
           ))}
         </div>
 
-        {/* 3D Reading Flipbook Modal (Light Theme) */}
+        {/* 3D Reading Flipbook Modal */}
         {activeReadingBook && (
-          <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
-            <div className="w-full max-w-4xl bg-white rounded-3xl border border-slate-200 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-              <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-                <div className="flex items-center gap-2">
-                  <BookOpen size={18} className="text-blue-900" />
-                  <span className="text-sm font-black text-slate-900">{activeReadingBook.title}</span>
-                </div>
+          <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-2 sm:p-6 animate-in fade-in duration-200">
+            <div className="w-full max-w-5xl flex flex-col max-h-[96vh] relative">
+              {/* Modal Top Actions */}
+              <div className="flex items-center justify-between pb-3 px-2">
+                <Link
+                  href={`/student/library/${activeReadingBook.id}`}
+                  className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg transition-all"
+                >
+                  <Maximize2 size={14} /> Full Page Study Room
+                </Link>
+
                 <button
                   onClick={() => setActiveReadingBook(null)}
-                  className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 cursor-pointer"
+                  className="p-2 rounded-full bg-white/20 hover:bg-white text-white hover:text-slate-950 transition-colors shadow-lg cursor-pointer"
+                  title="Close FlipBook (Esc)"
                 >
-                  <X size={18} />
+                  <X size={20} />
                 </button>
               </div>
 
-              <div className="p-8 flex-1 overflow-y-auto space-y-6">
-                <div className="p-6 rounded-2xl bg-blue-50/60 border border-blue-100 text-slate-800 space-y-2">
-                  <div className="text-xs font-black uppercase tracking-wider text-blue-900">
-                    Official NIOS Self-Learning Material (SLM)
-                  </div>
-                  <p className="text-sm leading-relaxed font-medium">
-                    This unit covers key theoretical principles, practical applications, solved exercises, and terminal evaluation questions according to the updated National Curriculum Framework (NCF).
-                  </p>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl border border-slate-200 space-y-2">
-                    <h4 className="text-xs font-black uppercase text-slate-500">Unit Structure</h4>
-                    <ul className="text-xs text-slate-700 space-y-1.5 font-medium">
-                      <li>• 1.1 Introduction &amp; Historical Context</li>
-                      <li>• 1.2 Core Theoretical Formulations</li>
-                      <li>• 1.3 Solved Model Examples &amp; Diagrams</li>
-                      <li>• 1.4 Practice Exercise &amp; Self Check</li>
-                    </ul>
-                  </div>
-
-                  <div className="p-4 rounded-xl border border-slate-200 space-y-2">
-                    <h4 className="text-xs font-black uppercase text-slate-500">Multilingual Availability</h4>
-                    <p className="text-xs text-slate-700 font-medium leading-relaxed">
-                      This textbook is mapped to all 22 scheduled Indian languages with synchronized audio lectures and glossary definitions.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
-                <span className="text-xs text-slate-500 font-medium">Pages: {activeReadingBook.pages?.length || 140} Chapters</span>
-                <button
-                  onClick={() => setActiveReadingBook(null)}
-                  className="px-6 py-2.5 bg-blue-900 text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-blue-800 transition-all cursor-pointer"
-                >
-                  Close Viewer
-                </button>
-              </div>
+              {/* Real 3D FlipBook Viewer with animations, speech audio, and zoom */}
+              <FlipBook
+                title={activeReadingBook.title}
+                author={activeReadingBook.author}
+                category={activeReadingBook.category}
+                subjectCode={activeReadingBook.subjectCode}
+                pageDetails={activeReadingBook.pageDetails}
+                pages={activeReadingBook.pages}
+                onClose={() => setActiveReadingBook(null)}
+              />
             </div>
           </div>
         )}

@@ -48,31 +48,32 @@ export interface Course {
   languageTracks: Record<string, LanguageTrack>;
 }
 
-// 22 Scheduled Indian Languages with native script and voice code
+// 23 Scheduled Indian Languages with native script and voice code
 export const INDIAN_LANGUAGES_22 = [
   { code: 'hi', name: 'Hindi', native: 'हिन्दी', voice: 'hi-IN' },
   { code: 'en', name: 'English', native: 'English', voice: 'en-US' },
-  { code: 'bn', name: 'Bengali', native: 'বাংলা', voice: 'bn-IN' },
-  { code: 'te', name: 'Telugu', native: 'తెలుగు', voice: 'te-IN' },
-  { code: 'mr', name: 'Marathi', native: 'मराठी', voice: 'mr-IN' },
-  { code: 'ta', name: 'Tamil', native: 'தமிழ்', voice: 'ta-IN' },
+  { code: 'as', name: 'Assamese', native: 'অসমীয়া', voice: 'as-IN' },
+  { code: 'bn', name: 'Bangla', native: 'বাংলা', voice: 'bn-IN' },
+  { code: 'bh', name: 'Bhojpuri', native: 'भोजपुरी', voice: 'hi-IN' },
+  { code: 'brx', name: 'Bodo', native: "बर'/बड़ो", voice: 'hi-IN' },
+  { code: 'doi', name: 'Dogri', native: 'डोगरी', voice: 'hi-IN' },
   { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી', voice: 'gu-IN' },
   { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ', voice: 'kn-IN' },
-  { code: 'ml', name: 'Malayalam', native: 'മലയാളം', voice: 'ml-IN' },
-  { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ', voice: 'pa-IN' },
-  { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ', voice: 'or-IN' },
-  { code: 'as', name: 'Assamese', native: 'অসমীয়া', voice: 'as-IN' },
-  { code: 'ur', name: 'Urdu', native: 'اردو', voice: 'ur-PK' },
-  { code: 'sa', name: 'Sanskrit', native: 'संस्कृतम्', voice: 'sa-IN' },
   { code: 'ks', name: 'Kashmiri', native: 'کٲشُر', voice: 'ks-IN' },
   { code: 'kok', name: 'Konkani', native: 'कोंकणी', voice: 'kok-IN' },
   { code: 'mai', name: 'Maithili', native: 'मैथिली', voice: 'hi-IN' },
+  { code: 'ml', name: 'Malayalam', native: 'മലയാളം', voice: 'ml-IN' },
   { code: 'mni', name: 'Manipuri', native: 'মণিপুরী', voice: 'bn-IN' },
+  { code: 'mr', name: 'Marathi', native: 'मराठी', voice: 'mr-IN' },
   { code: 'ne', name: 'Nepali', native: 'नेपाली', voice: 'ne-NP' },
-  { code: 'brx', name: 'Bodo', native: 'बड़ो', voice: 'hi-IN' },
+  { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ', voice: 'or-IN' },
+  { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ', voice: 'pa-IN' },
+  { code: 'sa', name: 'Sanskrit', native: 'संस्कृतम्', voice: 'sa-IN' },
   { code: 'sat', name: 'Santali', native: 'ᱥᱟᱱᱛᱟᱲᱤ', voice: 'hi-IN' },
-  { code: 'doi', name: 'Dogri', native: 'डोगरी', voice: 'hi-IN' },
   { code: 'sd', name: 'Sindhi', native: 'سنڌي', voice: 'sd-IN' },
+  { code: 'ta', name: 'Tamil', native: 'தமிழ்', voice: 'ta-IN' },
+  { code: 'te', name: 'Telugu', native: 'తెలుగు', voice: 'te-IN' },
+  { code: 'ur', name: 'Urdu', native: 'اردو', voice: 'ur-PK' },
 ];
 
 export const COURSES_DATA: Course[] = [
@@ -187,7 +188,7 @@ export const COURSES_DATA: Course[] = [
         title: 'गिलहरी को अपनी धारियां कैसे मिलीं – एक नैतिक कथा',
         summary: 'रामायण की प्रेरक कथा: भगवान राम द्वारा नन्हीं गिलहरी के निःस्वार्थ समर्पण को आशीर्वाद देकर उसकी पीठ पर तीन धारियां अंकित करने का नैतिक पाठ।',
         transcript: 'नमस्ते विद्यार्थियों, राष्ट्रीय मुक्त विद्यालयी शिक्षा संस्थान (NIOS) के माध्यमिक अंग्रेजी पाठ्यक्रम में आपका स्वागत है। आज का हमारा पाठ है "How the Squirrel Got His Stripes – A Moral Tale"। यह पाठ हमें सिखाता है कि कोई भी काम छोटा नहीं होता। जब भगवान राम लंका तक सेतु का निर्माण कर रहे थे, तब एक नन्हीं गिलहरी ने भी कंकड़ लाकर समुद्र में डाले...',
-        videoUrl: '/courses/how-the-squirrel-got-his-stripes/kashmiri.mp4'
+        videoUrl: '/courses/how-the-squirrel-got-his-stripes/hindi.mp4'
       },
       en: {
         code: 'en',
@@ -208,6 +209,16 @@ export const COURSES_DATA: Course[] = [
         summary: 'রামায়ণের অমর নীতিশিক্ষা: রাম সেতু নির্মাণে ক্ষুদ্র কাঠবেড়ালির নিঃস্বার্থ অবদান এবং প্রভু রামের আঙুলের স্নেহের স্পর্শে পিঠে তিনটি সাদা দাগ প্রাপ্তি।',
         transcript: 'প্রিয় শিক্ষার্থীবৃন্দ, এনআইওএস মাধ্যমিক ইংরেজি পাঠে স্বাগতম। আজকের পাঠ কাঠবেড়ালির দাগ পাওয়ার নীতিমূলক গল্প। বড় পাথর নয়, আন্তরিক ভালোবাসাই কাজের আসল শক্তি...',
         videoUrl: '/courses/how-the-squirrel-got-his-stripes/bengali.mp4'
+      },
+      bh: {
+        code: 'bh',
+        name: 'Bhojpuri',
+        nativeName: 'भोजपुरी',
+        speechCode: 'hi-IN',
+        title: 'गिलहरी के आपन पीठ पर धारी कइसे मिलल – एगो नीतिकथा',
+        summary: 'रामायण के प्रेरक कथा: भगवान राम द्वारा नन्हीं गिलहरी के निःस्वार्थ समर्पण के आशीर्वाद देके पीठ पर तीन गो धारी अंकित करे के पाठ।',
+        transcript: 'सभ बिद्यार्थी लोगन के प्रणाम। आज के पाठ में हमनी के सीखब कि कवनो काम छोट ना होला...',
+        videoUrl: '/courses/how-the-squirrel-got-his-stripes/hindi.mp4'
       },
       te: {
         code: 'te',
@@ -327,7 +338,7 @@ export const COURSES_DATA: Course[] = [
         title: 'گلہری کتھکن لٔبی پننس پٹھس پیٹھ لکیرہٕ – اکھ اخلاقی دٔلیل',
         summary: 'رامائن ہنز نصیحت آموز دٔلیل: ننہِ گلہری ہند خلوص تہٕ سیوا ہند سبق۔',
         transcript: 'خوش آمدید، از چھی اسہٕ پران یہ دٔلیل زِ محبتس منز چھُنہ کانہہ تہِ کامہِ لۄکٹ آسان...',
-        videoUrl: '/courses/how-the-squirrel-got-his-stripes/hindi.mp4'
+        videoUrl: '/courses/how-the-squirrel-got-his-stripes/kashmiri.mp4'
       },
       kok: {
         code: 'kok',

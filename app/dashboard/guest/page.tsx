@@ -56,7 +56,7 @@ export default function GuestDashboard() {
                   </p>
 
                   <div className="flex flex-wrap gap-4 pt-4">
-                     <Link href="/login" className="px-10 py-5 bg-white text-slate-900 rounded-[2rem] font-black text-[10px] uppercase tracking-widest hover:bg-blue-900 hover:text-white transition-all shadow-xl active:scale-95 flex items-center gap-3">
+                     <Link href="/portal" className="px-10 py-5 bg-white text-slate-900 rounded-[2rem] font-black text-[10px] uppercase tracking-widest hover:bg-blue-900 hover:text-white transition-all shadow-xl active:scale-95 flex items-center gap-3">
                         Enroll for Free <ArrowRight size={18} />
                      </Link>
                      <button className="px-10 py-5 bg-white/5 hover:bg-white/10 text-white rounded-[2rem] font-black text-[10px] uppercase tracking-widest transition-all border border-white/10">

@@ -48,6 +48,7 @@ import {
   Check
 } from 'lucide-react';
 import { COURSES_DATA, Course, INDIAN_LANGUAGES_22, LanguageTrack } from '@/lib/courses-data';
+import LanguageSelectorDropdown from '@/components/LanguageSelectorDropdown';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 
@@ -89,6 +90,8 @@ export default function CourseVideoPlayerPage() {
   const [isPipActive, setIsPipActive] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isDubbingLoading, setIsDubbingLoading] = useState(false);
+  const [dubbingLangInfo, setDubbingLangInfo] = useState<{ native: string; name: string } | null>(null);
   const hideControlsTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Accessibility controls
@@ -117,6 +120,14 @@ export default function CourseVideoPlayerPage() {
     };
     document.addEventListener('fullscreenchange', onFsChange);
 
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const langParam = urlParams.get('lang');
+      if (langParam && INDIAN_LANGUAGES_22.some(l => l.code === langParam)) {
+        setSelectedLangCode(langParam);
+      }
+    }
+
     return () => {
       synthRef.current?.cancel();
       document.removeEventListener('fullscreenchange', onFsChange);
@@ -136,15 +147,15 @@ export default function CourseVideoPlayerPage() {
   const activeLangTrack: LanguageTrack = foundCourse.languageTracks[selectedLangCode] ||
     foundCourse.languageTracks['hi'] ||
     foundCourse.languageTracks['en'] || {
-      code: selectedLangCode,
-      name: INDIAN_LANGUAGES_22.find(l => l.code === selectedLangCode)?.name || 'Language',
-      nativeName: INDIAN_LANGUAGES_22.find(l => l.code === selectedLangCode)?.native || '',
-      speechCode: INDIAN_LANGUAGES_22.find(l => l.code === selectedLangCode)?.voice || 'hi-IN',
-      title: foundCourse.titleHindi,
-      summary: foundCourse.overview,
-      transcript: `नमस्ते विद्यार्थियों। इस पाठ में हम 23 भाषाओं में उपलब्ध एनआईओएस पाठ्यक्रम का अध्ययन कर रहे हैं।`,
-      videoUrl: foundCourse.lessons[0]?.videoUrl || '/courses/importance-of-animals-and-plants/hindi.mp4'
-    };
+    code: selectedLangCode,
+    name: INDIAN_LANGUAGES_22.find(l => l.code === selectedLangCode)?.name || 'Language',
+    nativeName: INDIAN_LANGUAGES_22.find(l => l.code === selectedLangCode)?.native || '',
+    speechCode: INDIAN_LANGUAGES_22.find(l => l.code === selectedLangCode)?.voice || 'hi-IN',
+    title: foundCourse.titleHindi,
+    summary: foundCourse.overview,
+    transcript: `नमस्ते विद्यार्थियों। इस पाठ में हम 23 भाषाओं में उपलब्ध एनआईओएस पाठ्यक्रम का अध्ययन कर रहे हैं।`,
+    videoUrl: foundCourse.lessons[0]?.videoUrl || '/courses/importance-of-animals-and-plants/hindi.mp4'
+  };
 
   const currentLesson = foundCourse.lessons.find(l => l.id === activeLessonId) || foundCourse.lessons[0];
 
@@ -159,35 +170,54 @@ export default function CourseVideoPlayerPage() {
     resolvedVideoSrc.startsWith('/')
   );
 
-  // Seamless Language Switcher - preserves playback position
+  // Seamless Language Switcher - with 1.5s AI Dubbing Loader and position sync
   const handleLanguageChange = (newLangCode: string) => {
+    if (newLangCode === selectedLangCode && !isDubbingLoading) return;
+
     synthRef.current?.cancel();
     setIsReadingAloud(false);
 
     const savedTime = videoRef.current?.currentTime || currentTime;
     const wasPlaying = videoRef.current ? !videoRef.current.paused : isPlaying;
 
-    setSelectedLangCode(newLangCode);
+    const targetLang = INDIAN_LANGUAGES_22.find(l => l.code === newLangCode) || {
+      code: newLangCode,
+      name: newLangCode.toUpperCase(),
+      native: newLangCode.toUpperCase(),
+    };
 
-    const targetLang = INDIAN_LANGUAGES_22.find(l => l.code === newLangCode);
-    setToastMessage(`🔊 ${targetLang?.native} (${targetLang?.name}) Dubbed · Synced at ${formatTime(savedTime)}`);
-    setTimeout(() => setToastMessage(null), 3500);
+    // Pause playback during dubbing transition
+    if (videoRef.current && wasPlaying) {
+      videoRef.current.pause();
+    }
 
+    setIsDubbingLoading(true);
+    setDubbingLangInfo({ native: targetLang.native, name: targetLang.name });
+
+    // 1.5s AI Dubbing Synchronization simulation
     setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.currentTime = savedTime;
-        if (wasPlaying) {
-          videoRef.current.play().catch(() => {});
-          setIsPlaying(true);
+      setSelectedLangCode(newLangCode);
+
+      setTimeout(() => {
+        setIsDubbingLoading(false);
+        setToastMessage(`🔊 ${targetLang.native} (${targetLang.name}) Dubbed · Synced at ${formatTime(savedTime)}`);
+        setTimeout(() => setToastMessage(null), 3500);
+
+        if (videoRef.current) {
+          videoRef.current.currentTime = savedTime;
+          if (wasPlaying) {
+            videoRef.current.play().catch(() => { });
+            setIsPlaying(true);
+          }
         }
-      }
-    }, 120);
+      }, 150);
+    }, 1500);
   };
 
   const togglePlay = () => {
     if (!videoRef.current) return;
     if (videoRef.current.paused) {
-      videoRef.current.play().catch(() => {});
+      videoRef.current.play().catch(() => { });
       setIsPlaying(true);
     } else {
       videoRef.current.pause();
@@ -235,10 +265,10 @@ export default function CourseVideoPlayerPage() {
   const toggleFullscreen = () => {
     if (!playerContainerRef.current) return;
     if (!document.fullscreenElement) {
-      playerContainerRef.current.requestFullscreen?.().catch(() => {});
+      playerContainerRef.current.requestFullscreen?.().catch(() => { });
       setIsFullscreen(true);
     } else {
-      document.exitFullscreen?.().catch(() => {});
+      document.exitFullscreen?.().catch(() => { });
       setIsFullscreen(false);
     }
   };
@@ -346,7 +376,7 @@ export default function CourseVideoPlayerPage() {
         </div>
 
         {/* Main Grid: Video Player on Left, Lessons Playlist on Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           {/* LEFT 2 COLUMNS: VIDEO PLAYER + ACCESSIBILITY HUB + TABS */}
           <div className="lg:col-span-2 space-y-6">
             {/* The Video Container */}
@@ -384,7 +414,7 @@ export default function CourseVideoPlayerPage() {
 
                     {/* Big Animated Center Play Button Overlay when paused */}
                     <AnimatePresence>
-                      {!isPlaying && (
+                      {!isPlaying && !isDubbingLoading && (
                         <motion.button
                           initial={{ scale: 0.8, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
@@ -394,6 +424,61 @@ export default function CourseVideoPlayerPage() {
                         >
                           <Play size={36} className="ml-1 fill-white" />
                         </motion.button>
+                      )}
+                    </AnimatePresence>
+
+                    {/* AI Dubbing Synchronization Loader Overlay (1-2 seconds) */}
+                    <AnimatePresence>
+                      {isDubbingLoading && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute inset-0 z-40 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center select-none"
+                        >
+                          <div className="relative mb-4 flex items-center justify-center">
+                            {/* Outer pulsing ring */}
+                            <div className="w-20 h-20 rounded-full bg-blue-500/20 animate-ping absolute" />
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 shadow-xl shadow-blue-500/30 flex items-center justify-center text-white relative z-10 border border-blue-400/40">
+                              <Sparkles size={28} className="text-amber-300 animate-spin" style={{ animationDuration: '3s' }} />
+                            </div>
+                          </div>
+
+                          {/* Sound wave equalizer animation */}
+                          <div className="flex items-center gap-1.5 h-7 mb-4">
+                            {[0.7, 0.4, 0.9, 0.5, 0.8, 0.3, 0.75].map((speed, i) => (
+                              <motion.div
+                                key={i}
+                                animate={{ height: ['8px', '28px', '8px'] }}
+                                transition={{ repeat: Infinity, duration: speed, ease: 'easeInOut' }}
+                                className="w-1 rounded-full bg-gradient-to-t from-blue-500 to-cyan-300"
+                              />
+                            ))}
+                          </div>
+
+                          <div className="space-y-1 max-w-sm">
+                            <span className="inline-block px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-[10px] font-black uppercase tracking-widest text-blue-300 mb-1">
+                              NEP 2020 AI Dubbing Engine
+                            </span>
+                            <h4 className="text-base sm:text-lg font-black text-white tracking-wide">
+                              Synchronizing {dubbingLangInfo?.name} Dubbing
+                            </h4>
+                            <p className="text-xs text-blue-200/80 font-medium">
+                              Switching audio track & subtitles to <span className="text-white font-bold">{dubbingLangInfo?.native}</span>...
+                            </p>
+                          </div>
+
+                          {/* Animated progress bar spanning 1.5s */}
+                          <div className="w-48 h-1.5 bg-white/15 rounded-full mt-5 overflow-hidden">
+                            <motion.div
+                              initial={{ width: '0%' }}
+                              animate={{ width: '100%' }}
+                              transition={{ duration: 1.4, ease: 'easeInOut' }}
+                              className="h-full bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 rounded-full"
+                            />
+                          </div>
+                        </motion.div>
                       )}
                     </AnimatePresence>
 
@@ -458,9 +543,8 @@ export default function CourseVideoPlayerPage() {
 
                     {/* Sleek Custom Controls Bar */}
                     <div
-                      className={`absolute inset-x-0 bottom-0 z-30 pt-16 pb-3 px-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent transition-opacity duration-300 ${
-                        showControls || !isPlaying ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                      }`}
+                      className={`absolute inset-x-0 bottom-0 z-30 pt-16 pb-3 px-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent transition-opacity duration-300 ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                        }`}
                     >
                       {/* Scrubber / Progress Bar */}
                       <div className="relative w-full mb-3 group/timeline cursor-pointer">
@@ -551,9 +635,8 @@ export default function CourseVideoPlayerPage() {
                           {/* Subtitles CC Toggle */}
                           <button
                             onClick={() => setIsSubtitlesEnabled(!isSubtitlesEnabled)}
-                            className={`p-1.5 px-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                              isSubtitlesEnabled ? 'bg-blue-600 text-white' : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
-                            }`}
+                            className={`p-1.5 px-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${isSubtitlesEnabled ? 'bg-blue-600 text-white' : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                              }`}
                             title="Closed Captions / Subtitles"
                           >
                             CC
@@ -562,9 +645,8 @@ export default function CourseVideoPlayerPage() {
                           {/* Picture in Picture */}
                           <button
                             onClick={togglePip}
-                            className={`p-1.5 rounded-xl transition-all cursor-pointer ${
-                              isPipActive ? 'bg-blue-600 text-white' : 'hover:bg-white/10 text-white/80 hover:text-white'
-                            }`}
+                            className={`p-1.5 rounded-xl transition-all cursor-pointer ${isPipActive ? 'bg-blue-600 text-white' : 'hover:bg-white/10 text-white/80 hover:text-white'
+                              }`}
                             title="Picture in Picture"
                           >
                             <PictureInPicture2 size={18} />
@@ -616,7 +698,7 @@ export default function CourseVideoPlayerPage() {
             </div>
 
             {/* 23 INDIAN LANGUAGES QUICK DUBBING CAROUSEL */}
-            <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm space-y-3">
+            <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm space-y-3 relative z-30">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-900 flex items-center justify-center font-black">
@@ -625,9 +707,7 @@ export default function CourseVideoPlayerPage() {
                   <div>
                     <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
                       23 Indian Languages Synchronized Dubbing
-                      <span className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-bold">
-                        NEP 2020 Multi-Lingual Sync
-                      </span>
+
                     </h4>
                     <p className="text-[11px] text-slate-500 font-medium">
                       Switch video and audio instantly to any Indian language without losing your playback position.
@@ -640,67 +720,23 @@ export default function CourseVideoPlayerPage() {
                 </div>
               </div>
 
-              {/* Scrollable Language Pill Bar */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 no-scrollbar">
-                {INDIAN_LANGUAGES_22.map((lang) => {
-                  const isSelected = selectedLangCode === lang.code;
-                  return (
-                    <button
-                      key={lang.code}
-                      onClick={() => handleLanguageChange(lang.code)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
-                        isSelected
-                          ? 'bg-blue-900 text-white shadow-md shadow-blue-900/20 ring-2 ring-blue-900'
-                          : 'bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900'
-                      }`}
-                    >
-                      <span>{lang.native}</span>
-                      <span className={`text-[10px] ${isSelected ? 'text-blue-200' : 'text-slate-400'}`}>
-                        ({lang.name})
-                      </span>
-                      {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Accessibility and Audio Narration Control Bar */}
-            <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-2">
-                {/* 23-Language Audio Narration */}
-                <button
-                  onClick={handleReadAloud}
-                  className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
-                    isReadingAloud
-                      ? 'bg-amber-500 text-white shadow-lg animate-pulse'
-                      : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
-                  }`}
-                >
-                  <Volume2 size={16} />
-                  {isReadingAloud ? `Speaking (${activeLangTrack.name})...` : `Listen in ${activeLangTrack.nativeName}`}
-                </button>
-
-                {/* Subtitles Toggle */}
-                <button
-                  onClick={() => setIsSubtitlesEnabled(!isSubtitlesEnabled)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    isSubtitlesEnabled
-                      ? 'bg-blue-900 text-white'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  Subtitles (CC): {isSubtitlesEnabled ? 'ON' : 'OFF'}
-                </button>
+              <div className='flex gap-4 '>
+                {/* Language Selector Dropdown matching Image 1 */}
+                <div className="pt-1">
+                  <LanguageSelectorDropdown
+                    selectedCode={selectedLangCode}
+                    onSelect={(code) => handleLanguageChange(code)}
+                    width="w-sm"
+                  />
+                </div>
 
                 {/* ISL Feed Toggle */}
                 <button
                   onClick={() => setIsISLEnabled(!isISLEnabled)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    isISLEnabled
-                      ? 'bg-indigo-700 text-white'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
+                  className={`px-3.5  rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${isISLEnabled
+                    ? 'bg-indigo-700 text-white'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
                 >
                   ISL Feed (सांकेतिक भाषा)
                 </button>
@@ -711,20 +747,58 @@ export default function CourseVideoPlayerPage() {
                     const sizes: ('text-sm' | 'text-base' | 'text-lg')[] = ['text-sm', 'text-base', 'text-lg'];
                     setFontSize(sizes[(sizes.indexOf(fontSize) + 1) % sizes.length]);
                   }}
-                  className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-black cursor-pointer"
+                  className="px-3  rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-black cursor-pointer"
                 >
                   Text Size ({fontSize === 'text-sm' ? 'A' : fontSize === 'text-base' ? 'A+' : 'A++'})
                 </button>
+
+                {/* AI Summary Button */}
+                <button
+                  onClick={() => setShowAISummary(!showAISummary)}
+                  className="px-4 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-black text-[10px] uppercase tracking-wider flex items-center gap-1.5 shadow-md shadow-blue-700/20 cursor-pointer"
+                >
+                  AI 23-Lang Summary
+                </button>
+
+                {/* 23-Language Audio Narration */}
+                {/* <button
+                  onClick={handleReadAloud}
+                  className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${isReadingAloud
+                    ? 'bg-amber-500 text-white shadow-lg animate-pulse'
+                    : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
+                    }`}
+                >
+                  <Volume2 size={16} />
+                  {isReadingAloud ? `Speaking (${activeLangTrack.name})...` : `Listen in ${activeLangTrack.nativeName}`}
+                </button> */}
+
+                {/* Subtitles Toggle */}
+                <button
+                  onClick={() => setIsSubtitlesEnabled(!isSubtitlesEnabled)}
+                  className={`px-3.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${isSubtitlesEnabled
+                    ? 'bg-blue-900 text-white'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
+                >
+                  Subtitles (CC): {isSubtitlesEnabled ? 'ON' : 'OFF'}
+                </button>
+
               </div>
 
-              {/* AI Summary Button */}
-              <button
-                onClick={() => setShowAISummary(!showAISummary)}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-black text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-md shadow-blue-700/20 cursor-pointer"
-              >
-                <Sparkles size={14} /> AI 23-Lang Summary
-              </button>
+
+
             </div>
+
+            {/* Accessibility and Audio Narration Control Bar */}
+            {/* <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-2">
+
+
+
+              </div>
+
+
+            </div> */}
 
             {/* AI Summary Slide-out Box */}
             <AnimatePresence>
@@ -788,11 +862,10 @@ export default function CourseVideoPlayerPage() {
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-6 py-4 text-xs font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer whitespace-nowrap ${
-                      activeTab === tab
-                        ? 'border-blue-900 text-blue-900 bg-blue-50/40'
-                        : 'border-transparent text-slate-500 hover:text-slate-900'
-                    }`}
+                    className={`px-6 py-4 text-xs font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer whitespace-nowrap ${activeTab === tab
+                      ? 'border-blue-900 text-blue-900 bg-blue-50/40'
+                      : 'border-transparent text-slate-500 hover:text-slate-900'
+                      }`}
                   >
                     {tab}
                   </button>
@@ -932,11 +1005,10 @@ export default function CourseVideoPlayerPage() {
                   <button
                     key={stg.id}
                     onClick={() => setFlowStage(i)}
-                    className={`px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 ${
-                      flowStage === i
-                        ? 'bg-blue-900 text-white shadow-md'
-                        : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
-                    }`}
+                    className={`px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 ${flowStage === i
+                      ? 'bg-blue-900 text-white shadow-md'
+                      : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
+                      }`}
                   >
                     <stg.icon size={14} />
                     <span>{stg.label.split('(')[0]}</span>
@@ -1076,7 +1148,7 @@ export default function CourseVideoPlayerPage() {
           </div>
 
           {/* RIGHT COLUMN: LESSONS PLAYLIST */}
-          <div className="space-y-6">
+          <div className="space-y-6 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto pr-1">
             <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div>
@@ -1097,15 +1169,13 @@ export default function CourseVideoPlayerPage() {
                     <button
                       key={lesson.id}
                       onClick={() => setActiveLessonId(lesson.id)}
-                      className={`w-full p-3.5 rounded-2xl text-left transition-all flex items-start gap-3 cursor-pointer ${
-                        isActive
-                          ? 'bg-blue-900 text-white shadow-xl shadow-blue-900/10'
-                          : 'bg-slate-50 hover:bg-slate-100 text-slate-800'
-                      }`}
+                      className={`w-full p-3.5 rounded-2xl text-left transition-all flex items-start gap-3 cursor-pointer ${isActive
+                        ? 'bg-blue-900 text-white shadow-xl shadow-blue-900/10'
+                        : 'bg-slate-50 hover:bg-slate-100 text-slate-800'
+                        }`}
                     >
-                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-black ${
-                        isActive ? 'bg-white/20 text-white' : 'bg-white text-slate-600 shadow-sm'
-                      }`}>
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-black ${isActive ? 'bg-white/20 text-white' : 'bg-white text-slate-600 shadow-sm'
+                        }`}>
                         {lesson.done ? <CheckCircle2 size={16} className={isActive ? 'text-white' : 'text-emerald-600'} /> : lesson.id}
                       </div>
 

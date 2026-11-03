@@ -8,25 +8,34 @@ interface AuthContextType {
   logout: () => void;
   updateLinguisticProfile: (motherLang: string | null, targetLang?: string | null) => void;
   isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<MockUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Check localStorage for user on mount
-    const stoblueUser = localStorage.getItem('user');
-    if (stoblueUser) {
-      try {
-        setUser(JSON.parse(stoblueUser));
-      } catch (e) {
-        localStorage.removeItem('user');
-        setUser(MOCK_USERS[0]);
+    try {
+      const isLoggedOut = localStorage.getItem('logged_out') === 'true';
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      } else if (!isLoggedOut) {
+        // Default to first mock user for seamless experience
+        const defaultUser = MOCK_USERS[0];
+        setUser(defaultUser);
+        localStorage.setItem('user', JSON.stringify(defaultUser));
+      } else {
+        setUser(null);
       }
-    } else {
+    } catch (e) {
       setUser(MOCK_USERS[0]);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -41,6 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (foundUser) {
       setUser(foundUser);
       localStorage.setItem('user', JSON.stringify(foundUser));
+      localStorage.removeItem('logged_out');
       return true;
     }
     return false;
@@ -49,6 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    localStorage.setItem('logged_out', 'true');
   };
 
   const updateLinguisticProfile = (motherLang: string | null, targetLang?: string | null) => {
@@ -64,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, updateLinguisticProfile, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, login, logout, updateLinguisticProfile, isAuthenticated: !!user, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

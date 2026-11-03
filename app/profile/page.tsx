@@ -60,7 +60,7 @@ export default function ProfilePage() {
          <div className="grid lg:grid-cols-[380px_1fr] gap-10 items-start animate-fade-in pb-20">
 
             {/* Left Column - Identity & Verification */}
-            <div className="space-y-8">
+            <div className="sticky top-20 space-y-8">
 
                {/* Profile Identity Card */}
                <div className="p-8 rounded-2xl bg-white border border-slate-200 shadow-xs text-center relative overflow-hidden group">
@@ -163,11 +163,11 @@ export default function ProfilePage() {
                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-relaxed mb-6">
                            Your preferred primary language and desired target for multi-lingual learning pathways.
                         </p>
-                        
+
                         <div className="grid sm:grid-cols-2 gap-6">
                            <div className="space-y-2">
                               <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Primary Language</label>
-                              <select 
+                              <select
                                  value={activeUser.motherLang || ''}
                                  onChange={(e) => updateLinguisticProfile(e.target.value)}
                                  className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-900/5 transition-all"
@@ -180,7 +180,7 @@ export default function ProfilePage() {
                            </div>
                            <div className="space-y-2">
                               <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Target Language</label>
-                              <select 
+                              <select
                                  value={activeUser.targetLang || ''}
                                  onChange={(e) => updateLinguisticProfile(activeUser.motherLang || null, e.target.value)}
                                  className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-900/5 transition-all"

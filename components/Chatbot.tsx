@@ -15,6 +15,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { generateNIOSAssistantResponse } from '@/lib/nios-ai-engine';
 
 const INDIAN_LANGUAGES = [
   { code: 'en', name: 'English' },
@@ -107,14 +108,19 @@ export default function Chatbot() {
       };
       setMessages(prev => [...prev, botResponse]);
     } catch (error) {
-      console.error('Chat error:', error);
-      const errorMessage: Message = {
+      console.error('Chat API fallback:', error);
+      const fallbackResponse = generateNIOSAssistantResponse(inputValue, undefined, newMessages.map(m => ({
+        role: m.sender === 'bot' ? 'ai' : 'user',
+        content: m.text
+      })));
+
+      const botResponse: Message = {
         id: Date.now() + 1,
-        text: "I'm having trouble connecting to the brain. Please try again or check your local Ollama instance.",
+        text: fallbackResponse.text,
         sender: 'bot',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages(prev => [...prev, botResponse]);
     } finally {
       setIsTyping(false);
     }

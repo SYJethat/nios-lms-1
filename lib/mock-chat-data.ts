@@ -5,7 +5,8 @@ export interface ChatMessage {
   timestamp: string;
   avatar?: string;
   status?: 'sending' | 'sent' | 'delivered' | 'read';
-  type?: 'text' | 'image' | 'quiz' | 'video' | 'file';
+  type?: 'text' | 'image' | 'quiz' | 'video' | 'file' | 'plan';
+  suggestedActions?: { label: string; action: string; link?: string }[];
 }
 
 export const mockChatHistory: ChatMessage[] = [

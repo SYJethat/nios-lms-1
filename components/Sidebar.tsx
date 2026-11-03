@@ -171,7 +171,7 @@ export default function AppSidebar() {
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
+    router.push("/portal");
   };
 
   const roleTitleMap: Record<string, { label: string; badge: string; color: string }> = {
