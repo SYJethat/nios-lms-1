@@ -262,17 +262,17 @@ const NewsBoardSection = () => {
 
   const content = {
     News: [
-      { date: '16 APR 2026', title: 'Schedule for October/November 2026 Examination for Secondary and Senior Secondary', isNew: true },
-      { date: '12 APR 2026', title: 'Public Notice regarding extension of last date for TMA submission', isNew: false },
-      { date: '08 APR 2026', title: 'Notification for D.El.Ed. (Special Education) Examination', isNew: false },
+      { date: '18 Nov 2026', title: 'Schedule for October/November 2026 Examination for Secondary and Senior Secondary', isNew: true },
+      { date: '15 Nov 2026', title: 'Public Notice regarding extension of last date for TMA submission', isNew: false },
+      { date: '12 Nov 2026', title: 'Notification for D.El.Ed. (Special Education) Examination', isNew: false },
     ],
     Circulars: [
-      { date: '15 APR 2026', title: 'Revised guidelines for Accreditation of Study Centres', isNew: true },
-      { date: '10 APR 2026', title: 'Circular regarding implementation of NEP 2020 in Vocational courses', isNew: false },
+      { date: '19 Nov 2026', title: 'Revised guidelines for Accreditation of Study Centres', isNew: true },
+      { date: '14 Nov 2026', title: 'Circular regarding implementation of NEP 2020 in Vocational courses', isNew: false },
     ],
     Events: [
-      { date: '20 APR 2026', title: 'National Workshop on AI in Open Schooling at NIOS HQ', isNew: true },
-      { date: '25 APR 2026', title: 'Celebration of World Book Day across Regional Centres', isNew: false },
+      { date: '22 Nov 2026', title: 'National Workshop on AI in Open Schooling at NIOS HQ', isNew: true },
+      { date: '24 Nov 2026', title: 'Celebration of World Book Day across Regional Centres', isNew: false },
     ]
   };
 
@@ -367,8 +367,8 @@ export default function Home() {
       {/* <Hero /> */}
       <section className="relative text-white overflow-hidden">
         <video autoPlay muted loop className="absolute inset-0 w-full h-full object-cover z-0">
-                <source src="/hero1.mp4" type="video/mp4" />
-              </video>
+          <source src="/hero1.mp4" type="video/mp4" />
+        </video>
 
 
         {/* <img src="/hero.png" alt="hero image" className="absolute inset-0 w-full h-full object-cover z-0" /> */}
@@ -387,7 +387,7 @@ export default function Home() {
 
               <p className="text-5xl font-black text-white  mb-8 max-w-2xl leading-relaxed">
                 {/* Learn One More Language */}
-                </p>
+              </p>
             </h1>
 
             <p className="text-lg sm:text-xl text-gray-600 font-medium mb-8 max-w-2xl leading-relaxed">
