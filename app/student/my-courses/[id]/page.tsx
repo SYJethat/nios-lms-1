@@ -47,7 +47,14 @@ import {
   Save,
   Check
 } from 'lucide-react';
-import { COURSES_DATA, Course, INDIAN_LANGUAGES_22, LanguageTrack } from '@/lib/courses-data';
+import {
+  COURSES_DATA,
+  Course,
+  INDIAN_LANGUAGES_22,
+  LanguageTrack,
+  getStoredBilateralCourses,
+  createBilateralCourse
+} from '@/lib/courses-data';
 import LanguageSelectorDropdown from '@/components/LanguageSelectorDropdown';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
@@ -69,13 +76,35 @@ export default function CourseVideoPlayerPage() {
   const router = useRouter();
   const courseId = params?.id as string;
 
-  // Find course from COURSES_DATA or fallback to first course
-  const foundCourse = COURSES_DATA.find(c => c.id === courseId) || COURSES_DATA[0];
+  const [bilateralCourse, setBilateralCourse] = useState<Course | null>(null);
 
-  // Active language track (23 Indian languages)
+  // Active language track (22 Indian languages)
   const [selectedLangCode, setSelectedLangCode] = useState('hi');
   const [activeLessonId, setActiveLessonId] = useState(1);
   const [activeTab, setActiveTab] = useState<'Overview' | 'Notes' | 'Resources' | 'Discussion' | 'TMA'>('Overview');
+
+  useEffect(() => {
+    if (courseId && courseId.startsWith('bilateral-')) {
+      const stored = getStoredBilateralCourses().find(c => c.id === courseId);
+      if (stored) {
+        setBilateralCourse(stored);
+        const targetTrack = Object.keys(stored.languageTracks)[0];
+        if (targetTrack) setSelectedLangCode(targetTrack);
+      } else {
+        const parts = courseId.replace('bilateral-', '').split('-');
+        if (parts.length >= 2) {
+          const sLang = INDIAN_LANGUAGES_22.find(l => l.code === parts[0])?.name || 'Hindi';
+          const tLang = INDIAN_LANGUAGES_22.find(l => l.code === parts[1])?.name || 'Tamil';
+          const created = createBilateralCourse(sLang, tLang);
+          setBilateralCourse(created);
+          setSelectedLangCode(parts[1]);
+        }
+      }
+    }
+  }, [courseId]);
+
+  // Find course from custom bilateral courses or COURSES_DATA or fallback to first course
+  const foundCourse = bilateralCourse || COURSES_DATA.find(c => c.id === courseId) || COURSES_DATA[0];
 
   // Video Player state
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -153,7 +182,7 @@ export default function CourseVideoPlayerPage() {
     speechCode: INDIAN_LANGUAGES_22.find(l => l.code === selectedLangCode)?.voice || 'hi-IN',
     title: foundCourse.titleHindi,
     summary: foundCourse.overview,
-    transcript: `नमस्ते विद्यार्थियों। इस पाठ में हम 23 भाषाओं में उपलब्ध एनआईओएस पाठ्यक्रम का अध्ययन कर रहे हैं।`,
+    transcript: `नमस्ते विद्यार्थियों। इस पाठ में हम 22 भाषाओं में उपलब्ध एनआईओएस पाठ्यक्रम का अध्ययन कर रहे हैं।`,
     videoUrl: foundCourse.lessons[0]?.videoUrl || '/courses/importance-of-animals-and-plants/hindi.mp4'
   };
 
@@ -698,7 +727,7 @@ export default function CourseVideoPlayerPage() {
             </div>
 
             {/* 23 INDIAN LANGUAGES QUICK DUBBING CAROUSEL */}
-            <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm space-y-3 relative z-30">
+            <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm space-y-3 relative ">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-900 flex items-center justify-center font-black">
@@ -706,7 +735,7 @@ export default function CourseVideoPlayerPage() {
                   </div>
                   <div>
                     <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                      23 Indian Languages Synchronized Dubbing
+                      22 Indian Languages Synchronized Dubbing
 
                     </h4>
                     <p className="text-[11px] text-slate-500 font-medium">
@@ -757,7 +786,7 @@ export default function CourseVideoPlayerPage() {
                   onClick={() => setShowAISummary(!showAISummary)}
                   className="px-4 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-black text-[10px] uppercase tracking-wider flex items-center gap-1.5 shadow-md shadow-blue-700/20 cursor-pointer"
                 >
-                  AI 23-Lang Summary
+                  AI 22-Lang Summary
                 </button>
 
                 {/* 23-Language Audio Narration */}
@@ -931,7 +960,7 @@ export default function CourseVideoPlayerPage() {
                     </h4>
                     {[
                       { title: 'मानव जीवन में पशु-पक्षी एवं वनस्पति - संपूर्ण पाठ्यपुस्तक SLM.pdf', size: '14.2 MB' },
-                      { title: '23 भाषाओं में पारिभाषिक शब्दावली एवं शब्दकोश.pdf', size: '5.8 MB' },
+                      { title: '22 भाषाओं में पारिभाषिक शब्दावली एवं शब्दकोश.pdf', size: '5.8 MB' },
                       { title: 'अभ्यास प्रश्नोत्तर एवं पूर्व वर्ष प्रश्न पत्र.pdf', size: '3.1 MB' }
                     ].map((res, i) => (
                       <div key={i} className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
@@ -1199,10 +1228,10 @@ export default function CourseVideoPlayerPage() {
             <div className="p-6 bg-gradient-to-br from-indigo-900 to-blue-950 text-white rounded-3xl shadow-xl space-y-4">
               <div className="flex items-center gap-3">
                 <Globe size={24} className="text-blue-400" />
-                <h5 className="text-sm font-black uppercase tracking-wider">23 Indian Languages</h5>
+                <h5 className="text-sm font-black uppercase tracking-wider">22 Indian Languages</h5>
               </div>
               <p className="text-xs text-slate-300 leading-relaxed font-medium">
-                Switch video track, audio narration, and live subtitles anytime. All course videos are synchronized across 23 languages under the National Education Policy (NEP 2020).
+                Switch video track, audio narration, and live subtitles anytime. All course videos are synchronized across 22 languages under the National Education Policy (NEP 2020).
               </p>
               <div className="pt-2 text-[11px] text-blue-300 font-bold">
                 ✓ Approved under National Education Policy (NEP)

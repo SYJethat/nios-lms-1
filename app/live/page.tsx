@@ -123,7 +123,7 @@ export default function LiveClassesPage() {
       date: new Date().toISOString().split('T')[0], // Today
       time: '11:00 AM - 12:00 PM',
       status: 'live',
-      platform: 'NIOS WebRTC Studio (23 Languages)',
+      platform: 'NIOS WebRTC Studio (22 Languages)',
       viewers: 1482,
       joinUrl: '#',
       tags: ['NEP 2020', 'Multi-Audio', 'ISL Supported', 'Class 10']
@@ -291,7 +291,7 @@ export default function LiveClassesPage() {
   return (
     <DashboardLayout
       title="Live Virtual Classroom"
-      subtitle="Interactive multi-camera streaming with 23 synchronized regional languages & national faculty"
+      subtitle="Interactive multi-camera streaming with 22 synchronized regional languages & national faculty"
     >
       <div className="space-y-10 animate-fade-in pb-20">
 
@@ -471,7 +471,7 @@ export default function LiveClassesPage() {
               <div className="p-4 bg-slate-950 border-t border-slate-800 flex items-center gap-2.5 overflow-x-auto no-scrollbar">
                 <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1 shrink-0 mr-1">
                   <Globe size={13} />
-                  <span>23 Langs Live Dub:</span>
+                  <span>22 Langs Live Dub:</span>
                 </span>
                 {INDIAN_LANGUAGES_22.map((lang) => {
                   const isActive = selectedLanguage === lang.code;
@@ -660,7 +660,7 @@ export default function LiveClassesPage() {
 
                 {[
                   { q: 'How does deforestration directly impact the pollination cycle in agricultural crops?', student: 'Ananya S. · Kolkata', votes: 48 },
-                  { q: 'Can we submit TMA assignments in any of the 23 regional languages?', student: 'Gaurav K. · Patna', votes: 36 },
+                  { q: 'Can we submit TMA assignments in any of the 22 regional languages?', student: 'Gaurav K. · Patna', votes: 36 },
                   { q: 'What is the minimum passing score for the practical lab assessment?', student: 'Kavita M. · Jaipur', votes: 19 }
                 ].map((item, idx) => (
                   <div key={idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
@@ -776,7 +776,7 @@ export default function LiveClassesPage() {
                     <li>Biodiversity is vital for nutrient cycling and ecosystem resilience.</li>
                     <li>Avian species control agricultural pests naturally without chemical pesticides.</li>
                     <li>Plants regulate microclimate and prevent soil erosion in river basins.</li>
-                    <li>23 Scheduled languages provide synchronized study material.</li>
+                    <li>22 Scheduled languages provide synchronized study material.</li>
                   </ul>
                 </div>
 
@@ -1040,10 +1040,10 @@ export default function LiveClassesPage() {
                 <Sparkles size={14} /> Official NEP 2020 Protocol
               </span>
               <h3 className="text-xl font-black">
-                How 23 Regional Languages Synchronization Works
+                How 22 Regional Languages Synchronization Works
               </h3>
               <p className="text-xs text-slate-300 font-medium leading-relaxed">
-                NIOS multi-stream WebRTC nodes synchronize 23 scheduled Indian language audio tracks directly alongside the master laboratory demonstration video, ensuring uniform academic delivery across all Indian states.
+                NIOS multi-stream WebRTC nodes synchronize 22 scheduled Indian language audio tracks directly alongside the master laboratory demonstration video, ensuring uniform academic delivery across all Indian states.
               </p>
             </div>
 
@@ -1064,7 +1064,7 @@ export default function LiveClassesPage() {
             <Link href="/student/my-courses/course-env-001" className="block">
               <button className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-xl shadow-blue-600/30 flex items-center justify-center gap-2 cursor-pointer">
                 <Video size={16} />
-                <span>Go To 23-Lang Video Lecture</span>
+                <span>Go To 22-Lang Video Lecture</span>
               </button>
             </Link>
           </div>

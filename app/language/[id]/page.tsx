@@ -36,6 +36,7 @@ import { ALL_484_PATHWAYS } from '@/lib/multilingual-data';
 import { useParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { LANGUAGE_NATIVE_MAP } from '@/app/language/page';
+import { getLanguageVideoUrl } from '@/lib/courses-data';
 
 // ─── Language Lesson sidebar data ──────────────────────────────────────────
 const lessons = [
@@ -252,7 +253,7 @@ export default function CoursePlayerPage() {
             'Gain confidence with bilingual dialogues and NIOS certification'
           ],
           summary: `Comprehensive 22x22 bilateral language bridge linking ${pathway.source} and ${pathway.target}. Covers script phonetics, everyday greetings, vocabulary, and dialogue scenarios under NEP 2020.`,
-         //  videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+          videoUrl: getLanguageVideoUrl(pathway.target),
           modules: []
         }
       : MOCK_COURSES[0])) as MockCourse;
@@ -571,6 +572,13 @@ export default function CoursePlayerPage() {
                     </button>
                   </Link>
                 </div>
+              ) : (course.videoUrl?.endsWith('.mp4') || course.videoUrl?.startsWith('/courses/')) ? (
+                <video
+                  src={course.videoUrl}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <iframe
                   src={getEmbedUrl(course.videoUrl || '')}

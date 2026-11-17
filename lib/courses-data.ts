@@ -658,3 +658,188 @@ export function saveEnrollmentOrder(order: any) {
     console.error('Failed to save order', e);
   }
 }
+
+export function getStoredBilateralCourses(): Course[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem('nios_enrolled_bilateral_courses_v1');
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+export function saveBilateralCourse(course: Course): Course[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const existing = getStoredBilateralCourses();
+    const filtered = existing.filter(c => c.id !== course.id);
+    const updated = [course, ...filtered];
+    localStorage.setItem('nios_enrolled_bilateral_courses_v1', JSON.stringify(updated));
+    saveEnrolledCourseId(course.id);
+    return updated;
+  } catch (e) {
+    return [];
+  }
+}
+
+export function getLanguageVideoUrl(langName: string): string {
+  const norm = langName.toLowerCase().trim();
+  const map: Record<string, string> = {
+    'hindi': 'hindi.mp4',
+    'english': 'english.mp4',
+    'bengali': 'bengali.mp4',
+    'telugu': 'telugu.mp4',
+    'marathi': 'marathi.mp4',
+    'tamil': 'tamil.mp4',
+    'gujarati': 'gujarati.mp4',
+    'kannada': 'kannada.mp4',
+    'malayalam': 'malayalam.mp4',
+    'punjabi': 'punjabi.mp4',
+    'odia': 'odia.mp4',
+    'assamese': 'assamese.mp4',
+    'urdu': 'urdu.mp4',
+    'sanskrit': 'sanskrit.mp4',
+    'kashmiri': 'kashmiri.mp4',
+    'konkani': 'konkani.mp4',
+    'maithili': 'maithili.mp4',
+    'manipuri': 'manipuri.mp4',
+    'nepali': 'nepali.mp4',
+    'bodo': 'bodo.mp4',
+    'santali': 'santhali.mp4',
+    'sindhi': 'sindhi.mp4',
+    'dogri': 'dogri.mp4',
+  };
+  const filename = map[norm] || `${norm}.mp4`;
+  const folders = [
+    '/courses/importance-of-animals-and-plants/',
+    '/courses/how-the-squirrel-got-his-stripes/'
+  ];
+  const chosenFolder = folders[Math.floor(Math.random() * folders.length)];
+  return `${chosenFolder}${filename}`;
+}
+
+export function createBilateralCourse(sourceLang: string, targetLang: string): Course {
+  const sourceCode = (INDIAN_LANGUAGES_22.find(l => l.name.toLowerCase() === sourceLang.toLowerCase())?.code || sourceLang.toLowerCase().slice(0, 2));
+  const targetCode = (INDIAN_LANGUAGES_22.find(l => l.name.toLowerCase() === targetLang.toLowerCase())?.code || targetLang.toLowerCase().slice(0, 2));
+  const courseId = `bilateral-${sourceCode}-${targetCode}`;
+  const videoUrl = getLanguageVideoUrl(targetLang);
+
+  return {
+    id: courseId,
+    titleEnglish: `Learn ${targetLang} via ${sourceLang}: Conversational Hub`,
+    titleHindi: `${sourceLang} के माध्यम से ${targetLang} सीखें: संवादात्मक केंद्र`,
+    subjectEnglish: `Bilateral Indian Language Learning (${sourceLang} ➔ ${targetLang})`,
+    subjectHindi: `द्विभाषी भाषा अधिगम (${sourceLang} ➔ ${targetLang})`,
+    category: 'भाषा एवं बहुभाषी शिक्षा (Languages & Multilingual Education)',
+    level: 'Secondary',
+    rating: 4.96,
+    reviewsCount: 1840,
+    duration: '16 Hours 30 Mins',
+    lessonsCount: 8,
+    price: 499,
+    originalPrice: 1999,
+    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=1200&auto=format&fit=crop&q=80',
+    badge: 'NEP Bilateral Certified',
+    instructor: {
+      name: `Dr. Priya Mehta & ${targetLang} Faculty`,
+      designation: `Senior Bilingual Specialist, NIOS Language Bureau`,
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+      verified: true
+    },
+    overview: `Comprehensive bilateral conversational curriculum designed specifically for native ${sourceLang} speakers to master spoken and written ${targetLang} under the National Education Policy (NEP 2020). Includes video lectures dubbed in ${targetLang}, phonetic guides, and native dialogues.`,
+    objectives: [
+      `Master authentic spoken phonetics and script conventions of ${targetLang} explained through ${sourceLang}.`,
+      `Engage in 200+ practical daily conversational scenarios, greetings, and marketplace dialogues.`,
+      `Understand comparative grammar: syntax, noun cases, tense structures, and verb conjugations.`,
+      `Complete interactive listening labs and AI-evaluated pronunciation drills in ${targetLang}.`,
+      `Earn an official NIOS Bilingual Proficiency Certificate upon final assessment.`
+    ],
+    lessons: [
+      {
+        id: 1,
+        title: `पाठ 1: ${targetLang} Alphabet & Phonetics via ${sourceLang} (ध्वनि एवं वर्णमाला)`,
+        duration: '18 min',
+        type: 'video',
+        done: true,
+        videoUrl: videoUrl,
+        description: `Introduction to ${targetLang} script, vowel-consonant combinations and vocal pronunciation with native comparisons.`
+      },
+      {
+        id: 2,
+        title: `पाठ 2: Essential Greetings & Daily Phrases (दैनिक अभिवादन एवं सामान्य वाक्य)`,
+        duration: '22 min',
+        type: 'video',
+        done: false,
+        videoUrl: videoUrl,
+        description: `How to introduce oneself, formal and informal greetings, asking questions and common courtesy expressions in ${targetLang}.`
+      },
+      {
+        id: 3,
+        title: `पाठ 3: Grammar Foundations - Nouns & Pronouns (संज्ञा, सर्वनाम एवं लिंग-वचन)`,
+        duration: '20 min',
+        type: 'video',
+        done: false,
+        videoUrl: videoUrl,
+        description: `Comparative grammatical rules between ${sourceLang} and ${targetLang} with clear visual charts.`
+      },
+      {
+        id: 4,
+        title: `पाठ 4: Verbs & Tense Conjugations (क्रिया एवं काल रचना)`,
+        duration: '25 min',
+        type: 'video',
+        done: false,
+        videoUrl: videoUrl,
+        description: `Present, past, and future tense verb forms in everyday conversational usage.`
+      },
+      {
+        id: 5,
+        title: `पाठ 5: Marketplace, Travel & Direction Dialogues (संवादात्मक परिदृश्य)`,
+        duration: '24 min',
+        type: 'video',
+        done: false,
+        videoUrl: videoUrl,
+        description: `Real-life practical dialogues for navigating train stations, markets, and public spaces in ${targetLang}.`
+      },
+      {
+        id: 6,
+        title: `पाठ 6: Cultural Idioms & Proverbs (लोकोक्तियाँ एवं सांस्कृतिक मुहावरे)`,
+        duration: '19 min',
+        type: 'video',
+        done: false,
+        videoUrl: videoUrl,
+        description: `Rich cultural expressions, folk wisdom, and literary nuances of ${targetLang}.`
+      },
+      {
+        id: 7,
+        title: `पाठ 7: Listening Comprehension Lab & Oral Viva (श्रवण एवं मौखिक अभ्यास)`,
+        duration: '30 min',
+        type: 'live',
+        done: false,
+        videoUrl: videoUrl,
+        description: `Interactive listening quiz and pronunciation score feedback powered by AI speech analysis.`
+      },
+      {
+        id: 8,
+        title: `पाठ 8: Final Bilingual Evaluation & Certification (अंतिम मूल्यांकन)`,
+        duration: '35 min',
+        type: 'quiz',
+        done: false,
+        videoUrl: videoUrl,
+        description: `Comprehensive 50-mark bilingual evaluation to unlock your verified NIOS completion certificate.`
+      }
+    ],
+    languageTracks: {
+      [targetCode]: {
+        code: targetCode,
+        name: targetLang,
+        nativeName: targetLang,
+        speechCode: `${targetCode}-IN`,
+        title: `Learn ${targetLang} via ${sourceLang}: Conversational Hub`,
+        summary: `Spoken ${targetLang} lectures for native ${sourceLang} speakers`,
+        transcript: `Welcome to the NIOS bilateral language classroom. In this module, you will learn authentic ${targetLang} expressions through ${sourceLang}.`,
+        videoUrl: videoUrl
+      }
+    }
+  };
+}

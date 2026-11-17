@@ -400,7 +400,7 @@ export default function AssessmentsPage() {
                 <Link href="/student/my-courses/course-env-001">
                   <button className="px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-black font-bold text-xs uppercase tracking-wider border border-white/20 backdrop-blur-md transition-all flex items-center gap-2 cursor-pointer">
                     <BookOpen size={16} />
-                    <span>Review 23-Lang Lecture</span>
+                    <span>Review 22-Lang Lecture</span>
                   </button>
                 </Link>
 

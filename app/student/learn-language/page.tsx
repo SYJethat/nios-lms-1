@@ -99,18 +99,18 @@ export default function LearnLanguagePage() {
   }).slice(0, 24); // Show top 24 pathways for clean performance
 
   const modes = [
-    { id: 'pathways', label: '484 Pathways', sub: '23-Lang Matrix', icon: <Layers className="w-5 h-5" />, color: 'bg-indigo-600' },
+    { id: 'pathways', label: '484 Pathways', sub: '22-Lang Matrix', icon: <Layers className="w-5 h-5" />, color: 'bg-indigo-600' },
     { id: 'speaking', label: 'Speaking Lab', sub: 'Voice & Fluency', icon: <Mic className="w-5 h-5" />, color: 'bg-rose-600' },
     { id: 'listening', label: 'Listening Lab', sub: 'TTS Comprehension', icon: <Headphones className="w-5 h-5" />, color: 'bg-blue-600' },
     { id: 'reading', label: 'Reading & Vocab', sub: 'Clickable Lexicon', icon: <BookOpen className="w-5 h-5" />, color: 'bg-emerald-600' },
     { id: 'writing', label: 'Writing & Grammar', sub: 'AI Composition Check', icon: <PenTool className="w-5 h-5" />, color: 'bg-amber-600' },
-    { id: 'video-lab', label: '23-Lang Video Stream', sub: 'Synced Master Dubs', icon: <Video className="w-5 h-5" />, color: 'bg-purple-600' },
+    { id: 'video-lab', label: '22-Lang Video Stream', sub: 'Synced Master Dubs', icon: <Video className="w-5 h-5" />, color: 'bg-purple-600' },
   ];
 
   return (
     <DashboardLayout
       title="National Multilingual Language Lab"
-      subtitle={`${activeUser.name} · NEP 2020 23 Scheduled Languages & 484 Bilateral Learning Pathways`}
+      subtitle={`${activeUser.name} · NEP 2020 22 Scheduled Languages & 484 Bilateral Learning Pathways`}
     >
       <div className="space-y-8 animate-fade-in pb-20">
 
@@ -124,7 +124,7 @@ export default function LearnLanguagePage() {
               <div>
                 <div className="flex items-center gap-2">
                   <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                    23 Indian Languages Bilingual Matrix
+                    22 Indian Languages Bilingual Matrix
                   </h2>
                   <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-black uppercase tracking-wider border border-emerald-200">
                     484 Pathways
@@ -337,7 +337,7 @@ export default function LearnLanguagePage() {
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
                   <div className="text-[10px] font-black uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
                     <Globe size={12} />
-                    <span>Quick Target Switcher (23 Indian Languages):</span>
+                    <span>Quick Target Switcher (22 Indian Languages):</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {INDIAN_LANGUAGES_22.map((l) => (
@@ -424,7 +424,7 @@ export default function LearnLanguagePage() {
                     Importance of Animals, Birds & Plants in Human Life
                   </h3>
                   <p className="text-xs text-slate-500 font-medium">
-                    Synchronized 23 Indian regional languages dubbing with gapless audio switching.
+                    Synchronized 22 Indian regional languages dubbing with gapless audio switching.
                   </p>
                 </div>
 
@@ -440,7 +440,7 @@ export default function LearnLanguagePage() {
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
                   <div className="flex items-center justify-between">
                     <h4 className="text-xs font-black text-slate-900 uppercase">
-                      Switch Audio Dubbing Track (23 Languages):
+                      Switch Audio Dubbing Track (22 Languages):
                     </h4>
                     <Link href="/student/my-courses/course-env-001" className="text-xs font-bold text-blue-900 hover:underline flex items-center gap-1">
                       <span>Open Full Player</span>

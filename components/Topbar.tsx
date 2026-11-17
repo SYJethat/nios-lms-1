@@ -85,7 +85,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
   const notifications = [
     {
       id: 1,
-      title: '23 Regional Dubs Synchronized',
+      title: '22 Regional Dubs Synchronized',
       message: 'Watch "Importance of Animals, Birds & Plants" in Hindi, English, Sindhi & 20 more languages.',
       time: 'Just now',
       unread: true,
@@ -142,7 +142,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search 23-lang lectures, subjects, modules..."
+              placeholder="Search 22-lang lectures, subjects, modules..."
               className="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200 focus:border-blue-900 focus:ring-3 focus:ring-blue-900/10 rounded-xl pl-9 pr-8 py-2 text-xs font-semibold text-slate-800 placeholder:text-slate-400 transition-all shadow-xs"
             />
             {searchTerm && (
@@ -181,7 +181,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
               <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                 <div className="px-3 py-2 border-b border-slate-100 flex items-center justify-between">
                   <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
-                    23 Indian Languages (NEP 2020)
+                    22 Indian Languages (NEP 2020)
                   </span>
                 </div>
                 <div className="max-h-60 overflow-y-auto space-y-0.5 p-1 scrollbar-thin">

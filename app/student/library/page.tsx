@@ -126,7 +126,7 @@ export default function DigitalLibraryPage() {
                 className="relative h-56 bg-gradient-to-br from-slate-100 to-blue-50/50 flex items-center justify-center p-6 border-b border-slate-100 overflow-hidden cursor-pointer group/cover"
               >
                 <div className="relative w-36 h-44 transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-1 shadow-md rounded-r-xl overflow-hidden border-l-4 border-blue-900 border-y border-r border-slate-200 bg-white">
-                  <img src={book.cover} alt={book.title} className="object-cover" />
+                  <img src={book.cover} alt={book.title} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   <div className="absolute bottom-2 left-2 right-2 text-[9px] font-black uppercase text-white tracking-wider">
                     NIOS OFFICIAL

@@ -99,7 +99,7 @@ export default function LearnerDashboard() {
       badge: 'Exemplary'
     },
     {
-      label: '23 Regional Languages',
+      label: '22 Regional Languages',
       value: 'NEP 2020',
       sub: 'Sync Dubbing & ISL',
       icon: Globe,
@@ -142,7 +142,7 @@ export default function LearnerDashboard() {
                 <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] text-slate-200 font-medium">
                   <span> 2 Subjects Enrolled</span>
                   <span>·</span>
-                  <span> 23 Scheduled Languages</span>
+                  <span> 22 Scheduled Languages</span>
                   <span>·</span>
                   <span> Gold Scholar Milestone (65%)</span>
                 </div>
@@ -172,7 +172,7 @@ export default function LearnerDashboard() {
                   <Sparkles size={13} className="text-amber-400" /> RESUME LECTURE
                 </span>
                 <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider border border-emerald-400/20">
-                  23 Languages Synced
+                  22 Languages Synced
                 </span>
               </div>
 
@@ -252,7 +252,7 @@ export default function LearnerDashboard() {
                     <span>74s Synced Master HD</span>
                   </div>
                   <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider shadow">
-                    ✓ 23 Indian Languages
+                    ✓ 22 Indian Languages
                   </div>
                 </div>
               </div>
@@ -299,7 +299,7 @@ export default function LearnerDashboard() {
                 </span>
               </div>
               <p className="text-xs text-slate-500 font-medium">
-                Continue learning your active subjects with full HD video playback in 23 synchronized Indian languages.
+                Continue learning your active subjects with full HD video playback in 22 synchronized Indian languages.
               </p>
             </div>
 
@@ -409,7 +409,7 @@ export default function LearnerDashboard() {
                         </div>
                         <span className="text-slate-600 font-bold">{course.instructor.name}</span>
                       </div>
-                      <span className="text-emerald-700 font-bold">✓ 23 Langs Sync</span>
+                      <span className="text-emerald-700 font-bold">✓ 22 Langs Sync</span>
                     </div>
                   </div>
                 </motion.div>
@@ -479,7 +479,7 @@ export default function LearnerDashboard() {
                   {/* Enroll Benefit Pill */}
                   <div className="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/60 text-[11px] text-amber-900 font-medium flex items-center gap-2">
                     <Award size={14} className="text-amber-700 shrink-0" />
-                    <span>Includes 23-language video streams & NIOS certification</span>
+                    <span>Includes 22-language video streams & NIOS certification</span>
                   </div>
 
                   {/* Action Button: ENROLL NOW */}
@@ -514,7 +514,7 @@ export default function LearnerDashboard() {
               </div>
               <Link href="/student/explore-courses">
                 <button className="px-5 py-2.5 rounded-xl bg-blue-900 text-white font-black text-xs uppercase tracking-wider hover:bg-blue-800 transition-all shadow-md cursor-pointer">
-                  Browse 23-Lang Catalog
+                  Browse 22-Lang Catalog
                 </button>
               </Link>
             </div>
@@ -538,7 +538,7 @@ export default function LearnerDashboard() {
                 </span>
 
                 <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                  23 Indian Languages Video Hub
+                  22 Indian Languages Video Hub
                 </h3>
 
                 <p className="text-slate-500 text-sm max-w-2xl leading-relaxed">
@@ -702,7 +702,7 @@ export default function LearnerDashboard() {
                 >
                   <span className="flex items-center gap-2.5">
                     <Video size={16} className="text-blue-900" />
-                    <span>23-Lang Video Lecture</span>
+                    <span>22-Lang Video Lecture</span>
                   </span>
                   <ExternalLink size={14} className="text-slate-400" />
                 </Link>

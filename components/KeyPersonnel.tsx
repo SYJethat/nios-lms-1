@@ -18,8 +18,8 @@ const personnel = [
   },
   {
     role: "Union Minister of Education",
-    name: "Shri Dharmendra Pradhan",
-    image: "https://nitm.ac.in/convocation2021/assets/img/portfolio/1.png",
+    name: "Shri Pralhad Joshi",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_EphTd-PSM-xNTYS68cpTROOy68pWFPTSekVPzDwmsmNhNM1rz_yPlMOCq5xcnwU5QmOqrAQvu-EvtItnn-NV3vHchuG5uI-xsKRuhg&s=10",
     links: ["Profile", "Initiatives"]
   },
   {
@@ -51,12 +51,12 @@ export default function KeyPersonnel() {
             >
               {/* Background Accent */}
               <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-full -translate-y-12 translate-x-12 group-hover:scale-150 transition-transform duration-500" />
-              
+
               <div className="relative z-10 flex flex-col items-center text-center">
                 <div className="relative mb-6">
                   <div className="w-28 h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:border-blue-100 transition-colors">
-                    <img 
-                      src={person.image} 
+                    <img
+                      src={person.image}
                       alt={person.name}
                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                     />
@@ -75,23 +75,23 @@ export default function KeyPersonnel() {
                   </h3>
                 </div>
 
-                <div className="mt-6 flex flex-wrap justify-center gap-2">
+                {/* <div className="mt-6 flex flex-wrap justify-center gap-2">
                   {person.links.map(link => (
-                    <button 
+                    <button
                       key={link}
                       className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 border border-slate-200 rounded-full hover:bg-slate-100 transition-colors"
                     >
                       {link}
                     </button>
                   ))}
-                </div>
+                </div> */}
               </div>
             </motion.div>
           ))}
         </div>
-        
+
         {/* Chairperson Message Brief */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -102,7 +102,7 @@ export default function KeyPersonnel() {
           </div>
           <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
             <div className="w-24 h-24 rounded-full border-4 border-blue-400 overflow-hidden shrink-0 shadow-xl">
-               <img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202507/professor-akhilesh-mishra-takes-charge-at-national-institute-of-open-schooling-232640593-16x9_0.jpg" alt="Chairperson" className="w-full h-full object-cover" />
+              <img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202507/professor-akhilesh-mishra-takes-charge-at-national-institute-of-open-schooling-232640593-16x9_0.jpg" alt="Chairperson" className="w-full h-full object-cover" />
             </div>
             <div>
               <p className="text-xl italic font-serif leading-relaxed mb-4">

@@ -23,11 +23,18 @@ import {
   Star
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { COURSES_DATA, Course, getStoredEnrolledIds, getStoredEnrollmentOrders } from '@/lib/courses-data';
+import {
+  COURSES_DATA,
+  Course,
+  getStoredEnrolledIds,
+  getStoredEnrollmentOrders,
+  getStoredBilateralCourses
+} from '@/lib/courses-data';
 
 export default function MyCoursesPage() {
   const { user } = useAuth();
   const [enrolledIds, setEnrolledIds] = useState<string[]>([]);
+  const [bilateralCourses, setBilateralCourses] = useState<Course[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'in_progress' | 'completed'>('all');
   const [showFiltersModal, setShowFiltersModal] = useState(false);
@@ -35,9 +42,13 @@ export default function MyCoursesPage() {
 
   useEffect(() => {
     setEnrolledIds(getStoredEnrolledIds());
+    setBilateralCourses(getStoredBilateralCourses());
   }, []);
 
-  const enrolledCourses = COURSES_DATA.filter(course => enrolledIds.includes(course.id));
+  const allCourses = [...bilateralCourses, ...COURSES_DATA];
+  const enrolledCourses = allCourses.filter(course =>
+    enrolledIds.includes(course.id) || bilateralCourses.some(bc => bc.id === course.id)
+  );
 
   // Progress simulation map
   const progressMap: Record<string, number> = {
@@ -208,7 +219,7 @@ export default function MyCoursesPage() {
                         </div>
                         <span className="text-slate-600 font-bold">{course.instructor.name}</span>
                       </div>
-                      <span className="text-emerald-700 font-bold">✓ 23 Langs Sync</span>
+                      <span className="text-emerald-700 font-bold">✓ 22 Langs Sync</span>
                     </div>
                   </div>
                 </motion.div>
@@ -224,7 +235,7 @@ export default function MyCoursesPage() {
             </p>
             <Link href="/student/explore-courses">
               <button className="px-6 py-3 rounded-xl bg-blue-900 text-white font-black text-xs uppercase tracking-wider hover:bg-blue-800 transition-all shadow-md">
-                Explore 23-Language Courses
+                Explore 22-Language Courses
               </button>
             </Link>
           </div>

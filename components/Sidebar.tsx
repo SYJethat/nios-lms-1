@@ -67,15 +67,16 @@ export default function AppSidebar() {
   const learnerMain: NavItem[] = [
     { icon: <Home size={18} />, label: "Dashboard", labelHindi: "डैशबोर्ड", href: "/dashboard/learner" },
     { icon: <Compass size={18} />, label: "Explore Courses", labelHindi: "पाठ्यक्रम खोजें", href: "/student/explore-courses" },
+    { icon: <Video size={18} />, label: "22-Lang Learning", labelHindi: "22 भाषा वीडियो", href: "/language", badge: "Sync", badgeColor: "bg-emerald-100 text-emerald-800" },
     { icon: <GraduationCap size={18} />, label: "My Enrolled Courses", labelHindi: "मेरे पाठ्यक्रम", href: "/student/my-courses", badge: "2 Active", badgeColor: "bg-blue-100 text-blue-900" },
-    { icon: <Video size={18} />, label: "23-Lang Video Hub", labelHindi: "23 भाषा वीडियो", href: "/language", badge: "Sync", badgeColor: "bg-emerald-100 text-emerald-800" },
+
     { icon: <Radio size={18} />, label: "Live Classroom", labelHindi: "लाइव कक्षा", href: "/live", badge: "LIVE", badgeColor: "bg-rose-100 text-rose-700 animate-pulse" },
   ];
 
   const learnerAcademic: NavItem[] = [
     { icon: <FileText size={18} />, label: "Assessments & TMA", labelHindi: "मूल्यांकन एवं टीएमए", href: "/assessments", badge: "Due", badgeColor: "bg-amber-100 text-amber-900" },
     { icon: <BarChart2 size={18} />, label: "Learning Analytics", labelHindi: "प्रगति रिपोर्ट", href: "/analytics" },
-    { icon: <Globe size={18} />, label: "Language Lab", labelHindi: "भाषा प्रयोगशाला", href: "/student/learn-language" },
+    // { icon: <Globe size={18} />, label: "Language Lab", labelHindi: "भाषा प्रयोगशाला", href: "/student/learn-language" },
     { icon: <Gamepad2 size={18} />, label: "Gamified Knowledge", labelHindi: "ज्ञान अखाड़ा", href: "/gamification", badge: "XP", badgeColor: "bg-purple-100 text-purple-800" },
     { icon: <BookOpen size={18} />, label: "Digital Library", labelHindi: "डिजिटल पुस्तकालय", href: "/student/library" },
   ];

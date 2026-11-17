@@ -15,7 +15,9 @@ import {
   BookOpen,
   ArrowLeftRight,
   Headphones,
-  Bookmark
+  Bookmark,
+  GraduationCap,
+  X
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { MOCK_USERS } from '@/lib/mock-data';
@@ -24,6 +26,15 @@ import {
   ALL_484_PATHWAYS,
   Pathway
 } from '@/lib/multilingual-data';
+import CourseEnrollModal from '@/components/CourseEnrollModal';
+import {
+  Course,
+  createBilateralCourse,
+  saveBilateralCourse,
+  getStoredBilateralCourses,
+  getStoredEnrolledIds,
+  saveEnrolledCourseId
+} from '@/lib/courses-data';
 
 // ── 22 Scheduled Languages Metadata with Native Scripts & Sample Phrases ──
 export const LANGUAGE_NATIVE_MAP: Record<
@@ -78,6 +89,75 @@ export default function MultilingualLanguageHubPage() {
     'PATH-BENGALI-MARATHI'
   ]);
 
+  // Bilateral Course Enrollment Modal state
+  const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
+  const [selectedCourseForEnroll, setSelectedCourseForEnroll] = useState<Course | null>(null);
+  const [enrolledCourseIds, setEnrolledCourseIds] = useState<string[]>([]);
+  const [bilateralList, setBilateralList] = useState<Course[]>([]);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    setEnrolledCourseIds(getStoredEnrolledIds());
+    setBilateralList(getStoredBilateralCourses());
+  }, []);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  const handleEnrollBilateralClick = () => {
+    const course = createBilateralCourse(sourceLang, targetLang);
+    setSelectedCourseForEnroll(course);
+    setIsEnrollModalOpen(true);
+  };
+
+  const handleEnrollmentSuccess = (courseId: string) => {
+    if (selectedCourseForEnroll) {
+      saveBilateralCourse(selectedCourseForEnroll);
+      setBilateralList(prev => [selectedCourseForEnroll, ...prev.filter(c => c.id !== selectedCourseForEnroll.id)]);
+      setEnrolledPathways(prev => prev.includes(activeMatchedPathway.id) ? prev : [...prev, activeMatchedPathway.id]);
+    }
+    setEnrolledCourseIds(prev => prev.includes(courseId) ? prev : [...prev, courseId]);
+    showToast(`Enrolled in "${selectedCourseForEnroll?.titleEnglish || 'Bilateral Course'}"! Now available in My Courses.`);
+  };
+
+  // Find dynamic matched pathway from pair selector
+  const activeMatchedPathway = useMemo(() => {
+    const found = ALL_484_PATHWAYS.find(
+      (p) => p.source.toLowerCase() === sourceLang.toLowerCase() && p.target.toLowerCase() === targetLang.toLowerCase()
+    );
+    if (found) return found;
+    return {
+      id: `PATH-${sourceLang.toUpperCase()}-${targetLang.toUpperCase()}`,
+      source: sourceLang,
+      target: targetLang,
+      title: sourceLang === targetLang
+        ? `Advanced ${sourceLang} Grammar, Phonetics & Literature`
+        : `Learn ${targetLang} via ${sourceLang}: Conversational Mastery`,
+      subject: `${sourceLang}-${targetLang}`,
+      teacher: 'NIOS Multilingual AI Engine',
+      level: 'Foundation to Advanced',
+      rating: 4.95,
+      learners: 1240,
+      tags: [sourceLang, targetLang, 'Bilateral NEP', 'Phonetics', 'Conversational'],
+      description: `Bilateral language bridge specifically customized for native ${sourceLang} speakers to master spoken and written ${targetLang} with cross-linguistic phonetic comparisons.`
+    };
+  }, [sourceLang, targetLang]);
+
+  const currentBilateralCourse = useMemo(() => createBilateralCourse(sourceLang, targetLang), [sourceLang, targetLang]);
+  const isCurrentPairEnrolled = useMemo(() => {
+    return (
+      enrolledCourseIds.includes(currentBilateralCourse.id) ||
+      enrolledCourseIds.includes(activeMatchedPathway.id) ||
+      bilateralList.some(bc =>
+        bc.id === currentBilateralCourse.id ||
+        (bc.titleEnglish.toLowerCase().includes(targetLang.toLowerCase()) &&
+         bc.titleEnglish.toLowerCase().includes(sourceLang.toLowerCase()))
+      )
+    );
+  }, [enrolledCourseIds, bilateralList, currentBilateralCourse.id, activeMatchedPathway.id, targetLang, sourceLang]);
+
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('nios_enrolled_pathways');
@@ -122,25 +202,7 @@ export default function MultilingualLanguageHubPage() {
     window.speechSynthesis.speak(u);
   };
 
-  // Find dynamic matched pathway from pair selector
-  const activeMatchedPathway = useMemo(() => {
-    const found = ALL_484_PATHWAYS.find(
-      (p) => p.source.toLowerCase() === sourceLang.toLowerCase() && p.target.toLowerCase() === targetLang.toLowerCase()
-    );
-    if (found) return found;
-    return {
-      id: `PATH-${sourceLang.toUpperCase()}-${targetLang.toUpperCase()}`,
-      source: sourceLang,
-      target: targetLang,
-      title: sourceLang === targetLang
-        ? `Advanced ${sourceLang} Grammar, Phonetics & Literature`
-        : `Learn ${targetLang} via ${sourceLang}: Conversational Mastery`,
-      subject: `${sourceLang}-${targetLang}`,
-      teacher: 'NIOS Multilingual AI Engine',
-      level: 'Foundation to Advanced',
-      tags: ['Multilingual', 'Speech-Enabled', 'NEP-2020']
-    } as Pathway;
-  }, [sourceLang, targetLang]);
+
 
   // Filter 484 pathways
   const filteredPathways = useMemo(() => {
@@ -296,32 +358,7 @@ export default function MultilingualLanguageHubPage() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <Link href={`/student/learn-language?source=${encodeURIComponent(sourceLang)}&target=${encodeURIComponent(targetLang)}`}>
-                  <button className="px-6 py-3.5 rounded-xl bg-blue-900 hover:bg-blue-800 text-white font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-blue-900/20 active:scale-95 transition-all cursor-pointer">
-                    <Sparkles size={16} className="text-amber-300" />
-                    <span>Practice in Language Lab</span>
-                  </button>
-                </Link>
-                <Link href={`/language/${activeMatchedPathway.id}`}>
-                  <button className="px-5 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider shadow-md shadow-amber-500/20 active:scale-95 transition-all flex items-center gap-2 cursor-pointer">
-                    <BookOpen size={16} />
-                    <span>Open Pathway Course</span>
-                  </button>
-                </Link>
-                <button
-                  onClick={() => playGreeting(targetMeta.greeting, targetLang)}
-                  className={`px-4 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all flex items-center gap-1.5 cursor-pointer shadow-xs ${
-                    speakingText
-                      ? 'bg-emerald-100 text-emerald-900 border-emerald-300 animate-pulse'
-                      : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-300'
-                  }`}
-                >
-                  <Volume2 size={16} className="text-blue-700" />
-                  <span>{speakingText ? 'Speaking...' : 'Listen Sample'}</span>
-                </button>
-              </div>
+            
             </div>
 
             {/* Right Column: Dynamic Pathway Spotlight Card (Light Theme) */}
@@ -392,12 +429,31 @@ export default function MultilingualLanguageHubPage() {
                 </div>
 
                 <div className="pt-2">
-                  <Link href={`/language/${activeMatchedPathway.id}`} className="block w-full">
-                    <button className="w-full py-3 bg-blue-900 hover:bg-blue-800 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer">
-                      <span>Enter Bilateral Classroom</span>
+                  {isCurrentPairEnrolled ? (
+                    <div className="space-y-2">
+                      <Link href="/student/my-courses" className="block w-full">
+                        <button className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer">
+                          <CheckCircle2 size={16} />
+                          <span>✓ Enrolled — Open in My Courses</span>
+                          <ArrowRight size={14} />
+                        </button>
+                      </Link>
+                      <Link href={`/language/${activeMatchedPathway.id}`} className="block w-full text-center">
+                        <span className="text-[11px] font-bold text-blue-900 hover:underline">
+                          Or enter bilateral classroom directly →
+                        </span>
+                      </Link>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={handleEnrollBilateralClick}
+                      className="w-full py-3.5 bg-blue-900 hover:bg-black text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-lg active:scale-95 cursor-pointer group"
+                    >
+                      <GraduationCap size={16} className="text-amber-300 group-hover:scale-110 transition-transform" />
+                      <span>Enroll Bilateral Course</span>
                       <ArrowRight size={14} />
                     </button>
-                  </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -417,11 +473,10 @@ export default function MultilingualLanguageHubPage() {
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setSelectedFilterLang('All')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
-                  selectedFilterLang === 'All'
+                className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${selectedFilterLang === 'All'
                     ? 'bg-blue-900 text-white shadow-sm'
                     : 'bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 shadow-2xs'
-                }`}
+                  }`}
               >
                 <span>All 22 Languages</span>
                 <span className="text-[10px] opacity-75">(484)</span>
@@ -434,11 +489,10 @@ export default function MultilingualLanguageHubPage() {
                   <button
                     key={`pill-${lang}`}
                     onClick={() => setSelectedFilterLang(lang)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                      isActive
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${isActive
                         ? 'bg-blue-900 text-white shadow-sm'
                         : 'bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 shadow-2xs'
-                    }`}
+                      }`}
                   >
                     <span>{lang}</span>
                     <span className="text-[10px] text-slate-500 font-normal">({meta?.native || lang})</span>
@@ -464,17 +518,15 @@ export default function MultilingualLanguageHubPage() {
                   setActiveTab(tab.id as any);
                   setPageLimit(24);
                 }}
-                className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
-                  activeTab === tab.id
+                className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === tab.id
                     ? 'bg-white text-blue-900 shadow-xs border border-slate-200'
                     : 'text-slate-600 hover:text-slate-900'
-                }`}
+                  }`}
               >
                 <span>{tab.label}</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                    activeTab === tab.id ? 'bg-blue-100 text-blue-900' : 'bg-slate-200 text-slate-700'
-                  }`}
+                  className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${activeTab === tab.id ? 'bg-blue-100 text-blue-900' : 'bg-slate-200 text-slate-700'
+                    }`}
                 >
                   {tab.badge}
                 </span>
@@ -613,7 +665,7 @@ export default function MultilingualLanguageHubPage() {
 
                         {/* Action Buttons */}
                         <div className="pt-2 space-y-2">
-                          <div className="grid grid-cols-2 gap-2">
+                          {/* <div className="grid grid-cols-2 gap-2">
                             <Link href={`/language/${pathway.id}`} className="block">
                               <button className="w-full py-2.5 bg-blue-900 hover:bg-blue-800 text-white rounded-xl text-[11px] font-black uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs">
                                 <span>Classroom</span>
@@ -630,15 +682,14 @@ export default function MultilingualLanguageHubPage() {
                                 <Headphones size={12} />
                               </button>
                             </Link>
-                          </div>
+                          </div> */}
 
                           <button
                             onClick={() => toggleEnroll(pathway.id)}
-                            className={`w-full py-2 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-                              isEnrolled
+                            className={`w-full py-2 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer ${isEnrolled
                                 ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
                                 : 'bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-200'
-                            }`}
+                              }`}
                           >
                             {isEnrolled ? (
                               <>
@@ -757,6 +808,24 @@ export default function MultilingualLanguageHubPage() {
         )}
 
       </div>
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div className="fixed top-6 right-6 z-50 flex items-center gap-3 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-slate-700 animate-in slide-in-from-top-4 duration-200">
+          <CheckCircle2 size={18} className="text-emerald-400 shrink-0" />
+          <span className="text-xs font-bold">{toastMessage}</span>
+          <button onClick={() => setToastMessage(null)} className="ml-2 text-slate-400 hover:text-white">
+            <X size={15} />
+          </button>
+        </div>
+      )}
+
+      {/* Course Enrollment Modal */}
+      <CourseEnrollModal
+        course={selectedCourseForEnroll}
+        isOpen={isEnrollModalOpen}
+        onClose={() => setIsEnrollModalOpen(false)}
+        onSuccess={handleEnrollmentSuccess}
+      />
     </DashboardLayout>
   );
 }

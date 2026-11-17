@@ -133,7 +133,7 @@ export default function AnalyticsPage() {
       value: '38.5h',
       change: '+14% this week',
       up: true,
-      sub: '23-Lang Streamed',
+      sub: '22-Lang Streamed',
       icon: Video,
       color: 'text-blue-900 bg-blue-50'
     },
@@ -301,7 +301,7 @@ export default function AnalyticsPage() {
                 <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest flex items-center gap-1">
                   <Globe size={13} /> NEP 2020 Telemetry
                 </span>
-                <h3 className="text-lg font-black mt-0.5">23 Languages Audio Usage</h3>
+                <h3 className="text-lg font-black mt-0.5">22 Languages Audio Usage</h3>
               </div>
               <span className="px-2.5 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px] font-black uppercase">
                 Active
@@ -332,7 +332,7 @@ export default function AnalyticsPage() {
             <Link href="/student/my-courses/course-env-001" className="block pt-2">
               <button className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
                 <Video size={14} />
-                <span>Launch 23-Lang Lecture</span>
+                <span>Launch 22-Lang Lecture</span>
               </button>
             </Link>
           </div>
@@ -368,6 +368,7 @@ export default function AnalyticsPage() {
                   <th className="py-3 px-4 text-center">Assessment Score</th>
                   <th className="py-3 px-4">Syllabus Progress</th>
                   <th className="py-3 px-4">TMA Status</th>
+                  <th className="py-3 px-4 text-center">Action</th>
                   <th className="py-3 px-4 text-right">Academic Status</th>
                 </tr>
               </thead>
@@ -375,8 +376,17 @@ export default function AnalyticsPage() {
                 {performanceData.map((p, idx) => (
                   <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                     <td className="py-4 px-4">
-                      <div className="font-bold text-slate-900">{p.subject}</div>
-                      <div className="text-[11px] text-slate-400">{p.hindi}</div>
+                      <Link
+                        href={`/report?subject=${encodeURIComponent(p.subject)}`}
+                        className="group/item block hover:text-blue-900 transition-colors cursor-pointer"
+                        title={`Open ${p.subject} details`}
+                      >
+                        <div className="font-bold text-slate-900 group-hover/item:text-blue-900 flex items-center gap-1.5">
+                          <span>{p.subject}</span>
+                          <ArrowUpRight size={13} className="opacity-0 group-hover/item:opacity-100 transition-opacity text-blue-900" />
+                        </div>
+                        <div className="text-[11px] text-slate-400">{p.hindi}</div>
+                      </Link>
                     </td>
                     <td className="py-4 px-4 text-center">
                       <span className={`inline-flex items-center justify-center w-10 h-10 rounded-full font-black text-xs border-2 ${
@@ -401,6 +411,17 @@ export default function AnalyticsPage() {
                       <span className="text-[11px] font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">
                         {p.tmaStatus}
                       </span>
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      <Link
+                        href={`/report?subject=${encodeURIComponent(p.subject)}`}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-900 hover:bg-black text-white rounded-xl text-xs font-bold transition-all shadow-xs hover:shadow-md cursor-pointer whitespace-nowrap active:scale-95"
+                        title={`Open ${p.subject} individual report`}
+                      >
+                        <Eye size={13} />
+                        <span>Detial Report</span>
+                        <ChevronRight size={13} />
+                      </Link>
                     </td>
                     <td className="py-4 px-4 text-right">
                       <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${
@@ -476,7 +497,7 @@ export default function AnalyticsPage() {
                 { name: 'Scientific Inquiry & Ecology', score: 94, color: 'bg-emerald-500' },
                 { name: 'Vedic Mathematical Logic', score: 96, color: 'bg-purple-600' },
                 { name: 'Digital & AI Literacy', score: 82, color: 'bg-blue-600' },
-                { name: 'Multilingual Articulation (23 Langs)', score: 90, color: 'bg-indigo-600' },
+                { name: 'Multilingual Articulation (22 Langs)', score: 90, color: 'bg-indigo-600' },
                 { name: 'Critical Problem Solving', score: 85, color: 'bg-amber-500' }
               ].map((skill, idx) => (
                 <div key={idx} className="space-y-1.5">

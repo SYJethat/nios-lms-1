@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname } from 'next/navigation';
 import { ShieldX } from 'lucide-react';
+import { MOCK_USERS } from '@/lib/mock-data';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -20,7 +21,7 @@ export default function DashboardLayout({
   subtitle,
   allowedRoles,
 }: DashboardLayoutProps) {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading, login } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -39,6 +40,11 @@ export default function DashboardLayout({
 
     if (pathname.startsWith('/dashboard/') && rolePaths.includes(currentPathRole)) {
       if (user?.role !== currentPathRole) {
+        const targetUser = MOCK_USERS.find(u => u.role === currentPathRole);
+        if (targetUser && login) {
+          login(targetUser);
+          return;
+        }
         router.replace(`/dashboard/${user?.role}`);
       }
     } else if (pathname === '/dashboard') {
@@ -47,14 +53,24 @@ export default function DashboardLayout({
 
     // Protect /teacher/* routes → teacher only
     if (pathname.startsWith('/teacher/') && user?.role !== 'teacher') {
+      const teacherUser = MOCK_USERS.find(u => u.role === 'teacher');
+      if (teacherUser && login) {
+        login(teacherUser);
+        return;
+      }
       router.replace(`/dashboard/${user?.role}`);
     }
 
     // Protect /admin/* routes → admin only
     if (pathname.startsWith('/admin/') && user?.role !== 'admin') {
+      const adminUser = MOCK_USERS.find(u => u.role === 'admin');
+      if (adminUser && login) {
+        login(adminUser);
+        return;
+      }
       router.replace(`/dashboard/${user?.role}`);
     }
-  }, [isLoading, isAuthenticated, user, router, pathname]);
+  }, [isLoading, isAuthenticated, user, router, pathname, login]);
 
   if (isLoading || !isAuthenticated) {
     return (

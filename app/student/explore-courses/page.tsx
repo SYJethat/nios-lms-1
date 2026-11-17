@@ -137,7 +137,7 @@ export default function ExploreCoursesPage() {
             </div>
             <div>
               <div className="text-xs font-black uppercase tracking-wider text-blue-200">
-                23 Scheduled Indian Languages Synchronized AI Video Stream
+                22 Scheduled Indian Languages Synchronized AI Video Stream
               </div>
               <div className="text-[11px] text-slate-300 font-medium">
                 All video lectures dubbing synchronized across Hindi, English, Bengali, Tamil, Telugu, Marathi, Gujarati, Sindhi & more.
