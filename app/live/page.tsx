@@ -468,7 +468,7 @@ export default function LiveClassesPage() {
               </div>
 
               {/* 23 Languages Quick Switcher Strip directly below Video */}
-              <div className="p-4 bg-slate-950 border-t border-slate-800 flex items-center gap-2.5 overflow-x-auto no-scrollbar">
+              {/* <div className="p-4 bg-slate-950 border-t border-slate-800 flex items-center gap-2.5 overflow-x-auto no-scrollbar">
                 <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1 shrink-0 mr-1">
                   <Globe size={13} />
                   <span>22 Langs Live Dub:</span>
@@ -489,7 +489,7 @@ export default function LiveClassesPage() {
                     </button>
                   );
                 })}
-              </div>
+              </div> */}
             </div>
 
             {/* Broadcast Details Card */}
